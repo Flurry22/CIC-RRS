@@ -1,0 +1,198 @@
+body{
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    background-image: url("../img/eagle-logo-1.jpg");
+    position: relative;
+    box-sizing: border-box;
+}
+
+.header h1{
+    background-color: #880000;
+    padding-top: 30px;
+    margin: 0;
+}
+
+.footer h1{
+    background-color: #880000;
+    padding-top: 30px;
+    margin: 0;
+}
+
+
+/* css for container */
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 9vh;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 700px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border-radius: 10px;
+    background: transparent;
+    border: 2.5px solid black;
+    backdrop-filter: blur(10px);
+    color: whitesmoke;
+    box-shadow: 10px 10px 14px rgb(20, 20, 20);
+    margin-bottom: 69px;
+}
+
+.container img{
+    height: 100px;
+    width: 100px;
+    padding-top: 15px;
+}
+
+.container .usep{
+    font-weight: 700;
+    font-size: 25px;
+    margin: 1px;
+}
+
+.container .rms{
+    font-weight: 700;
+    font-size: 20px;
+}
+
+/* css for form */
+
+.container form{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container form input{
+    display: block;
+    height: 30px;
+    width: 100%;
+    border-radius: 8px;
+    border: 0.5px solid black;
+    text-indent: 10px;
+}
+
+.container form label{
+    display: block;
+    padding-bottom: 10px;
+    padding-top: 30px;
+    font-size: 20px;
+}
+
+.container form input:focus{
+    outline: none;
+}
+
+.container form .btn{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding-top: 50px;
+}
+
+.container form button {
+    height: 40px;
+    width: 150px;
+    border-radius: 8px;
+    border: 0.5px solid black;
+    font-size: 20px;
+}
+
+.container form button:hover {
+    background-color: #880000;
+    cursor: pointer;
+    color: whitesmoke;
+    border: 0.5px solid whitesmoke;
+}
+
+.container .or{
+    font-size: 25px;
+    text-align: center;
+    padding-top: 25px;
+}
+
+.container form .signup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+ }
+
+ .container form .signup a{
+    height: 40px;
+    width: 150px;
+    border: 0.5px solid black;
+    border-radius: 8px;
+    font-size: 20px;
+    background-color: whitesmoke;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    padding-top: 4px;
+}
+
+.container form .signup a:hover{
+    height: 40px;
+    width: 150px;
+    border: 0.5px solid black;
+    border-radius: 8px;
+    font-size: 20px;
+    border: 0.5px solid whitesmoke;
+    background-color: #880000;
+    color: whitesmoke;
+}
+
+
+/* responsive media */
+
+@media screen and (max-width: 375px) {
+    .container{
+        width: 100%;
+    }
+
+    .container p{
+        font-weight: 700;
+        font-size: 25px;
+        text-align: center;
+        padding-top: 5px;
+    }
+}
+
+
+
+@media only screen and (min-width: 376px) and (max-width: 768px) {
+    .container{
+        width: 80%;
+        margin-bottom: 85px;
+    }
+    
+    .container p{
+        font-weight: 700;
+        font-size: 25px;
+        text-align: center;
+        padding-top: 5px;
+    }
+}
+
+
+
+@media only screen and (min-width: 767px) and (max-width: 992px) {
+    .container{
+        margin-bottom: 401px;
+        width: auto;
+    }
+}
+
+
+
+@media only screen and (min-width: 1280px) {
+    .container p{
+        font-weight: 700;
+        font-size: 25px;
+        text-align: center;
+        padding-top: 5px;
+    }
+}

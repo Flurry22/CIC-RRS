@@ -1,0 +1,258 @@
+body{
+    background-color: #d9d9d9;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Header */
+.content-header{
+    background-color: #880000;
+    padding: 10px;
+}
+
+/* Contents of Dashboard */
+.usep{
+    background-color: #880000;
+    margin-left: 8px;
+    margin-top: 15px;
+    width: 300px;
+    height: 480px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px 3px #ababab;
+    position: fixed;
+}
+.usep .logo{
+    height: 80px;
+    width: 80px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.usep .usep-rms{
+    width: 200px;
+    margin-left: 110px;
+    margin-top: -69px;
+    font-size: 17px;
+    color: orange;
+    font-weight: bold;
+}
+.usep .user{
+    color: white;
+    text-align: center;
+    font-size: 17px;
+    margin-top: 35px;
+}
+.usep .researcher{
+    text-align: center;
+    margin-top: -15px;
+    font-size: 14px;
+    color: white;
+}
+.usep .dash{
+    color: orange;
+    font-size: 20px;
+    text-align: center;
+    margin-top: -30px;
+}
+.usep .content-list{
+    color: white;
+    margin-top: 15px;
+    font-size: 17px;
+    list-style-type: none;
+}
+.usep .content-list a{
+    text-decoration: none;
+    color: white;
+}
+.usep .content-list li{
+    margin-top: 25px;
+}
+.usep .content-list span{
+    margin-left: 15px;
+    font-size: 15px;
+    font-weight: 500;
+}
+.sub-body{
+    background-color: #B2BEB5;
+    padding-bottom: 10px;
+}
+
+
+.dashbrd{
+    margin-top: 20px;
+    font-size: 20px;
+    margin-left: 35px;
+    color:#880000;
+}
+
+
+.info{
+    background-color: whitesmoke;
+    border-radius: 8px;
+}
+.info img{
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    height: 250px;
+    width: 250px;
+    padding: 10px;
+    border-radius: 50%;
+}
+
+.info p{
+    margin-top: 5px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: whitesmoke;
+}
+.info #researcher{
+    margin-top: -20px;
+}
+.info .lorem{
+   text-align: justify;
+   padding: 0 20px;
+   font-size: 15px;
+}
+
+.education{
+    padding: 0 15px;
+    margin-top: 10px;
+}
+
+.work {
+    padding: 0 15px;
+    margin-top: 10px;
+}
+
+.skill{
+    padding: 0 15px 5px;
+    margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+.stats{
+    background-color: whitesmoke;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+.stats h2{
+    padding-left: 20px;
+}
+
+.stats img{
+    margin: 0 auto;
+    height: 250px;
+    width: 400px;
+    display: block;
+    
+}
+.stats .pending{
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-left: 30px;
+    margin-right: -10px;
+}
+.stats .pending span{
+    font-size: 18px;
+    font-weight: 600;
+    padding: 0 10px;
+}
+
+
+
+.stats .this-year{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-right: 10px;
+    
+}
+.stats .this-year span{
+    font-size: 18px;
+    padding: 0 5px;
+}
+
+.stats .numbers{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: -20px;
+    padding-bottom: 10px;
+    
+    
+}
+.stats .numbers span{
+    font-size: 18px;
+}
+
+
+
+
+.featured{
+    background-color: whitesmoke;
+    border-radius: 8px;
+    margin-top: 20px;
+    padding-bottom: 10px;
+}
+.featured h2{
+    padding-left: 20px;
+}
+
+.featured a{
+    text-decoration: none;
+    color:#880000;
+}
+
+.featured .vmp{
+    text-align: end;
+}
+
+.box-1{
+    border: 1px solid;
+    height: 400px;
+    height: 300px;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    display: flex;
+    overflow-y: hidden;
+}
+
+.box-1 img{
+    height: 200px;
+    width: 200px;
+    margin: 40px;
+}
+
+.box-1 span{
+    padding: 0 5px;
+    margin-top: 50px;
+}
+
+
+.vmp{
+    text-align: end;
+    padding: 0 10px;
+}
+
+
+.content-footer{
+    background-color: #880000;
+    padding: 10px;
+}
