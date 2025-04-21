@@ -20,6 +20,7 @@ use App\Http\Controllers\{
     ResearchFilesController,
     ResearcherResearchFilesController,
     ResearchReportController,
+    
 
 };
 
@@ -44,9 +45,10 @@ Route::middleware(['auth:academic_administrator'])->group(function () {
         Route::put('/update-leader/{researchId}', [AdminManageResearchController::class, 'updateLeader'])
         ->name('academic_administrator.update_leader');
 
+        
     // Manage Researchers Routes
-    Route::get('/academic_administrator/researchers', [AdminManageResearcherController::class, 'index'])
-        ->name('manage.researchers');
+    Route::get('/academic_administrator/researchers', [AdminManageResearcherController::class, 'index'])->name('manage.researchers');
+    Route::put('/academic_administrator/researchers/{id}/update-status', [AdminManageResearcherController::class, 'updateStatus'])->name('academic_administrator.manage_researchers.updateStatus');
 // School Year
 Route::get('/school-year/create', [SchoolYearController::class, 'create'])->name('school_years.create');
 Route::get('/school-years', [SchoolYearController::class, 'viewUpdateschoolyear'])->name('school_years.viewUpdateschoolyear');
@@ -78,6 +80,10 @@ Route::middleware('auth:research_staff')->group(function () {
         Route::get('/{id}/edit', [ViewResearchersController::class, 'edit'])->name('researchers.edit');
         Route::post('/{id}', [ViewResearchersController::class, 'update'])->name('researchers.update');
         Route::delete('/{id}', [ViewResearchersController::class, 'destroy'])->name('researchers.destroy');
+        Route::get('/report/preview/{researcherId}', [ViewResearchersController::class, 'researcherReportPreview'])->name('researchers.report.preview');
+        Route::get('generate-report-modal', [ViewResearchersController::class, 'showGenerateReportModal'])->name('generate.report.modal');
+        Route::get('/researcher/{id}/report/pdf', [ViewResearchersController::class, 'researcherReportPDF'])->name('researcher.report.pdf');
+
 
 
 
@@ -127,6 +133,8 @@ Route::get('research/{id}/view-proposal-file', [ResearcherRepositoryController::
         Route::patch('/update-deadline', [ShowResearchController::class, 'updateDeadline'])->name('research.updateDeadline');
         Route::post('/update-duration', [ShowResearchController::class, 'updateProjectDuration'])->name('research.updateDuration');
         Route::post('/download-zip', [ShowResearchController::class, 'downloadSelectedFiles'])->name('research.download.zip');
+        Route::post('/update-completed-date', [ShowResearchController::class, 'updateCompletedDate'])->name('research.updateCompletedDate');
+
 
     });
    
@@ -150,6 +158,9 @@ Route::get('research/{id}/view-proposal-file', [ResearcherRepositoryController::
 Route::middleware('auth:researcher')->group(function () {
     // Dashboard
     Route::get('/researcher/dashboard/{id}', [ResearcherDashboardController::class, 'show'])->name('researcher.dashboard');
+    Route::get('/researcher/{id}/report/preview', [ResearcherDashboardController::class, 'preview'])->name('researcher.dashboard.report.preview');
+    Route::get('researcher/{id}/report/pdf', [ResearcherDashboardController::class, 'reportPdf'])->name('researcher.dashboard.report.pdf');
+
 
     // Settings
     Route::prefix('researcher/settings')->group(function () {
@@ -159,12 +170,20 @@ Route::middleware('auth:researcher')->group(function () {
         Route::post('/change-password', [ResearcherSettingsController::class, 'changePassword'])->name('researcher.changePassword');
     });
 
+    // Researcher Search
     Route::get('/researchers/search', [ResearcherSearchController::class, 'index'])->name('researchers.search');
+    
    
+    // Researcher Profile
     Route::get('/researchers/{id}', [ResearcherProfileController::class, 'show'])->name('researcher.profile');
+
+    // Researcher Files
     Route::get('/researcher/files', [ResearcherResearchFilesController::class, 'index'])->name('researcher.files.index');
     Route::get('/researcher/files/{id}/download', [ResearcherResearchFilesController::class, 'download'])->name('researcher.files.download');
+    
+   
+});
 
 
     
-});
+

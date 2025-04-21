@@ -19,6 +19,7 @@ class Researcher extends Authenticatable
         'profile_picture',
         'bio',
         'skills',
+        'researcher_status',
     ];
    
     protected $hidden = ['password', 'remember_token'];
@@ -34,11 +35,17 @@ class Researcher extends Authenticatable
     // Many-to-many relationship for being part of multiple researches
     public function researches()
     {
-        return $this->belongsToMany(Research::class, 'researcher_research', 'researcher_id', 'research_id');
+        return $this->belongsToMany(Research::class, 'researcher_research', 'researcher_id', 'research_id')->withPivot('role');
     }
-
+    
     public function programs()
     {
         return $this->belongsToMany(Program::class, 'program_researcher');
     }
+    public function schoolYears()
+{
+    return $this->belongsToMany(SchoolYear::class, 'researcher_status')
+                ->withPivot('active')
+                ->withTimestamps();
+}
 }

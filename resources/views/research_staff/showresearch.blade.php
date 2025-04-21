@@ -60,7 +60,7 @@
                 @endif
 
                 <div class="card-header text-white">
-                    <h2 class="mb-0">Research: {{ $research->title }}</h2>
+                    <h2 class="mb-0">{{ $research->title }}</h2>
                 </div>
                 <button type="button" class="btn btn-primary mt-2 mb-2 float-end" style="background-color:#922220; border: 1px solid #922220;" data-bs-toggle="modal" data-bs-target="#updateTitleModal">
     Update Title
@@ -70,7 +70,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updateTitleModalLabel">Update Research Title</h5>
+                <h5 class="modal-title" id="updateTitleModalLabel"style="color: black;">Update Research Title</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -183,7 +183,7 @@
             @elseif($remainingDays == 0)
                 <p style="color: #FFD372;"><strong style="color: black;">Remaining Days:</strong> Today is the deadline!</p>
             @elseif($remainingDays < 0)
-                <p style="color: #FFD372;"><strong style="color: black;">Remaining Days:</strong> {{ abs($remainingDays) }} days</p>
+                <p><strong style="color: black;">Remaining Days:</strong> {{ abs($remainingDays) }} days</p>
             @endif
         @endif
         <button type="button" class="btn btn-primary" style="background-color:#922220; border: 1px solid #922220;" data-bs-toggle="modal" data-bs-target="#updateDeadlineModal">
@@ -375,6 +375,17 @@
                                 @enderror
                                 <button type="submit" class="btn mt-3" style="color:white ;background-color: #922220; border-color: white;">Upload</button>
                             </form>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                        <form action="{{ route('research.updateCompletedDate', $research->id) }}" method="POST" class="mb-3">
+    @csrf
+    <div class="form-group">
+        <label for="date_completed">Update Completed Date</label>
+        <input type="date" name="date_completed" id="date_completed" class="form-control" value="{{ old('date_completed', $research->date_completed ? \Carbon\Carbon::parse($research->date_completed)->format('Y-m-d') : '') }}" required>
+    </div>
+    <button type="submit" class="btn mt-3" style="color:white ;background-color: #922220; border-color: white;">Update</button>
+</form>
+
                         </div>
                     </div>
                 </div>

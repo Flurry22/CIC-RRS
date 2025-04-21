@@ -422,6 +422,40 @@ function toggleSelectAllDOST6Ps() {
             sidebar.classList.remove('active');
         });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const approvedDateInput = document.getElementById('approved_date');
+        const deadlineInput = document.getElementById('deadline');
+        const projectDurationInput = document.getElementById('project_duration');
+
+        function calculateDuration() {
+            const startDate = new Date(approvedDateInput.value);
+            const endDate = new Date(deadlineInput.value);
+
+            if (!isNaN(startDate) && !isNaN(endDate) && startDate <= endDate) {
+                const durationInMs = endDate - startDate;
+                const durationInDays = Math.ceil(durationInMs / (1000 * 60 * 60 * 24));
+                const durationInMonths = Math.round(durationInDays / 30.44);
+                const durationInYears = Math.round(durationInDays / 365.25);
+
+                let durationText = '';
+                
+                if (durationInYears >= 1) {
+                    durationText = `${durationInYears} year${durationInYears > 1 ? 's' : ''}`;
+                } else {
+                    durationText = `${durationInMonths} month${durationInMonths > 1 ? 's' : ''}`;
+                }
+
+                if (!projectDurationInput.matches(':focus')) { 
+                    projectDurationInput.value = durationText;
+                }
+            }
+        }
+
+        approvedDateInput.addEventListener('change', calculateDuration);
+        deadlineInput.addEventListener('change', calculateDuration);
+    });
+</script>
 </body>
 
 </html>

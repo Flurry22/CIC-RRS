@@ -26,7 +26,9 @@ class ResearchReportController extends Controller
 public function preview(Request $request)
 {
     // Fetch filtered data based on the selected filters
-    $query = Research::with(['members', 'programs', 'schoolYear']);
+    $query = Research::with(['members', 'programs', 'schoolYear'])
+    ->orderByRaw('COALESCE(approved_date, created_at) DESC') // Sort by approved_date or created_at
+    ->orderBy('title', 'asc');
     
 
     if ($request->school_year) {
@@ -63,7 +65,9 @@ public function preview(Request $request)
 
 public function generatePdf(Request $request)
 {
-    $query = Research::with(['members', 'programs', 'schoolYear']);
+    $query = Research::with(['members', 'programs', 'schoolYear'])
+    ->orderByRaw('COALESCE(approved_date, created_at) DESC') // Sort by approved_date or created_at
+    ->orderBy('title', 'asc');
 
     if ($request->school_year) {
         $query->whereHas('schoolYear', function ($q) use ($request) {

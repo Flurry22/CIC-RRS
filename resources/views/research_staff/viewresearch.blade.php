@@ -9,6 +9,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('stylesheet/researchStaff/viewResearch.css') }}">
 </head>
+@php
+    use Illuminate\Support\Str;
+@endphp
 <style>
     .card:hover {
         transform: scale(1.006);  /* Slightly lifts the card */
@@ -19,39 +22,42 @@
 .card .card-title {
     color: #4c2f6f;
 }
-.pagination li a {
-        color: #52489f; /* Main theme color */
-        background-color: #f8f9fa; /* Light background */
-        border: 1px solid #ddd;
-        margin: 0 5px;
+.pagination-container .page-link {
+        color: #922220; /* default link color */
+        border: 1px solid #dee2e6;
         padding: 8px 12px;
-        border-radius: 5px;
-        text-decoration: none;
-        transition: all 0.3s ease;
+        margin: 0 2px;
+        border-radius: 6px;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    /* Active Page */
-    .pagination li.active a {
-        background-color: #52489f; /* Color for the selected page */
-        color: #fff; /* Text color for active page */
-        border-color: #52489f; /* Border color matching the background */
-        pointer-events: none;
-        font-weight: bold; /* Bold text for better emphasis */
-    }
-
-    /* Hover Effect */
-    .pagination li a:hover {
+    .pagination-container .page-link:hover {
         background-color: #922220;
-        color: white;
-        border-color: white;
+        color: #ffffff;
     }
 
-    /* Disabled Links */
-    .pagination li.disabled a {
-        color: #ccc;
+    .pagination-container .page-item.active .page-link {
+        background-color: #922220;
+        border-color: #922220;
+        color: #ffffff;
+    }
+
+    .pagination-container .page-item.disabled .page-link {
+        color: #adb5bd;
         background-color: #f8f9fa;
-        border-color: #ddd;
-        pointer-events: none;
+        border-color: #dee2e6;
+    }
+    .research-title-link {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #212529; /* Bootstrap text-dark */
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .research-title-link:hover {
+        color: #922220;
+        text-decoration: underline;
     }
 
     </style>
@@ -122,7 +128,8 @@
                 onchange="this.form.submit()">
                 <option value="" {{ request('status') === '' ? 'selected' : '' }}>All Statuses</option>
                 <option value="On-Going" {{ request('status') === 'On-Going' ? 'selected' : '' }}>Ongoing</option>
-                <option value="Finished" {{ request('status') === 'Finished' ? 'selected' : '' }}>Terminated/Finished</option>
+                <option value="Finished" {{ request('status') === 'Finished' ? 'selected' : '' }}>Finished</option>
+                <option value="overdue" {{ request('status') === 'overdue' ? 'selected' : '' }}>Overdue</option>
             </select>
         </div>
 
@@ -140,33 +147,64 @@
 <hr class="border-3" style="color: white; margin: 0 auto; width: 100%;">
 <br>
 
-                <!-- Research Cards -->
-                <div class="row g-1">
+<div class="card shadow-sm border-0 mb-4" style="border-radius: 12px; overflow: hidden;">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-borderless mb-0">
+                <!-- Header Row -->
+                <thead>
+                    <tr style="background-color: #f8f9fa;">
+                        <th class="col-md-5 fw-bold text-dark py-2 px-3">Title</th>
+                        <th class="col-md-3 fw-bold text-dark py-2 px-3">Leader</th>
+                        <th class="col-md-3 fw-bold text-dark py-2 px-3">Type</th>
+                        <th class="col-md-1 fw-bold text-dark py-2 px-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
                     @forelse ($research as $researchItem)
-                    <div class="card shadow-sm w-100" style="border: 1.5px solid black; border-radius: 10px; margin-bottom: 20px;">
-                           
-                                <a href="{{ route('research.show', ['id' => $researchItem->id]) }}" class="text-decoration-none text-dark">
-                                    <div class="card-body">
-                                        <h3 class="card-title" style="color: black;">{{ $researchItem->title }}</h3>
-                                        <div class="d-flex justify-content-between">
-                                        <p class="card-text" style="color: gray;"><strong style="color: black;">Leader:</strong> {{ $researchItem->leader->name }}</p>
-                                            <p class="card-text" style="color: gray;"><strong style="color: black;">Type:</strong> {{ ucfirst($researchItem->type) }}</p>
-                                           
-                                        </div>
-                                    </div>
-                                </a>
-                                <div class="card-footer text-right d-flex justify-content-start">
-                                <p class="card-text"  style="color: black;"><strong>Status:</strong> {{ $researchItem->status }}</p>
-                                </div>
-                            
-                        </div>
+                        <tr class="border-bottom">
+                            <!-- Title -->
+                            <td class="col-md-5 py-2 px-3">
+                            <a href="{{ route('research.show', ['id' => $researchItem->id]) }}" class="research-title-link">
+    {{ Str::limit($researchItem->title, 100, '...') }}
+</a>
+                            </td>
+
+                            <!-- Leader -->
+                            <td class="col-md-3 text-muted small py-2 px-3">
+                                {{ $researchItem->leader->name }}
+                            </td>
+
+                            <!-- Type -->
+                            <td class="col-md-3 text-muted small py-2 px-3">
+                                {{ ucfirst($researchItem->type) }}
+                            </td>
+
+                            <!-- Status -->
+                            <td class="col-md-1 py-2 px-3">
+    <span class="badge px-3 py-2 rounded-pill text-white"
+        style="
+            background-color: 
+            @if($researchItem->status == 'On-Going') #922220
+            @elseif($researchItem->status == 'Finished')rgb(59, 192, 106)
+            @else #6c757d
+            @endif;
+        ">
+        {{ $researchItem->status }}
+    </span>
+</td>
+                        </tr>
                     @empty
-                        <div class="col-12">
-                            <p class="text-muted">No research found for the applied filters and search query.</p>
-                        </div>
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-2">No research found for the applied filters and search query.</td>
+                        </tr>
                     @endforelse
-                </div>
-                <div class="pagination-container d-flex justify-content-center mt-4">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="pagination-container d-flex justify-content-center mt-4">
     {{ $research->onEachSide(1)->links('pagination::bootstrap-4') }}
 </div>
                

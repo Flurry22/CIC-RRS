@@ -45,7 +45,11 @@ class AdminManageResearchController extends Controller
         }
     
         // Get the filtered results
-        $researches = $researches->get();
+        $researches = $researches
+        ->orderBy('approved_date', 'desc')  // latest approved_date first
+        ->orderBy('title', 'asc')           // alphabetical title
+        ->orderBy('created_at', 'asc')      // earliest created_at
+        ->get();
     
         // Categorize researches based on program level
         $undergraduateResearches = $researches->filter(function ($research) {
@@ -58,9 +62,9 @@ class AdminManageResearchController extends Controller
     
         // Count research types for analytics
         $researchTypeCounts = [
-            'Program' => $researches->where('type', 'program')->count(),
-            'Project' => $researches->where('type', 'project')->count(),
-            'Study' => $researches->where('type', 'study')->count(),
+            'Program' => $researches->where('type', 'Program')->count(),
+            'Project' => $researches->where('type', 'Project')->count(),
+            'Study' => $researches->where('type', 'Study')->count(),
         ];
     
         // Prepare research events for the calendar

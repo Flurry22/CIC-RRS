@@ -32,8 +32,10 @@ class ResearcherRepositoryController extends Controller
         }
     
         // Get researches based on the applied filters
-        $researches = $query->get();
-    
+        $researches = $query->orderBy('approved_date', 'desc')
+        ->orderBy('title', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->get();
         // Count total researches
         $totalResearches = $researches->count();
     

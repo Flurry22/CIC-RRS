@@ -7,6 +7,7 @@
     <title>Researcher Repository</title>
     <link rel="stylesheet" href="{{ asset('stylesheet/researchStaff/repository.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     
     <style>
         
@@ -29,6 +30,15 @@
             font-size: 14px;
             color: #888;
         }
+        .card-title {
+    text-decoration: none !important; /* Removes underline */
+    font-size: 1.25rem; 
+    color: #52489f !important;
+}
+.hover-link:hover {
+        color: #922220 !important;
+        text-decoration: underline;
+    }
     </style>
 </head>
 <body>
@@ -81,13 +91,25 @@
                     </div>
 
                     <!-- Display Counts -->
-                    <div class="row mb-4">
-                        @foreach (['Total Researches' => $totalResearches, 'Researches with Certificate of Utilization' => $counts['certificate_of_utilization'] ?? 0, 'Researches with Special Order' => $counts['special_order'] ?? 0, 'Researches with Terminal File' => $counts['terminal_file'] ?? 0, 'Researches with Approved Proposal File' => $counts['approved_file'] ?? 0] as $label => $count)
-                            <div class="col-md-4 mb-3">
-                                <h5 style="color: white;">{{ $label }}: {{ $count }}</h5>
-                            </div>
-                        @endforeach
-                    </div>
+                    <div class="row mb-4 text-center">
+    @foreach ([
+        'Total Researches' => ['icon' => 'bi-journal-text', 'count' => $totalResearches],
+        'Researches with Certificate of Utilization' => ['icon' => 'bi-award', 'count' => $counts['certificate_of_utilization'] ?? 0],
+        'Researches with Special Order' => ['icon' => 'bi-file-earmark-lock', 'count' => $counts['special_order'] ?? 0],
+        'Researches with Terminal File' => ['icon' => 'bi-file-earmark-check', 'count' => $counts['terminal_file'] ?? 0],
+        'Researches with Approved Proposal File' => ['icon' => 'bi-patch-check', 'count' => $counts['approved_file'] ?? 0]
+    ] as $label => $data)
+        <div class="col-md-4 mb-3">
+            <div class="p-3 bg-light text-dark rounded shadow-sm h-100">
+                <div class="mb-2">
+                <i class="bi {{ $data['icon'] }} fs-4" style="color: #922220;"></i>
+                </div>
+                <h6 class="mb-1 fw-semibold">{{ $label }}</h6>
+                <h5 class="fw-bold">{{ $data['count'] }}</h5>
+            </div>
+        </div>
+    @endforeach
+</div>
 
                     <hr class="w-100 border-3">
 
@@ -116,58 +138,71 @@
                     <div class="mt-4">
                         <h3 style="color: white;">All Researches</h3>
                         <br>
-                        <div class="row">
-                            @foreach ($researches as $research)
-                                <div class="">
-                                    <div class="card mb-3 border" style="border-radius: 10px; border: 1px solid #ddd;">
-                                        <div class="card-body p-2">
-                                            <div class="row no-gutters">
-                                                <!-- Title Section with border and HR -->
-                                                <div class="col-12">
-                                                    <a href="#" 
-                                                    class="card-title mb-1 text-dark font-weight-bold" 
-                                                    style="font-size: 1.25rem; color: #52489f !important;"
-                                                    data-toggle="popover" 
-                                                    title="{{ $research->title }}" 
-                                                    data-content="
-                                                        <ul>
-                                                            @if ($research->certificate_of_utilization)
-                                                                <li><a href='{{ route('research.viewCertificate', $research->id) }}' target='_blank' class='btn btn-link'>View Certificate of Utilization</a></li>
-                                                            @endif
-                                                            @if ($research->special_order)
-                                                                <li><a href='{{ route('research.viewSpecialOrder', $research->id) }}' target='_blank' class='btn btn-link'>View Special Order</a></li>
-                                                            @endif
-                                                            @if ($research->approved_file)
-                                                                <li><a href='{{ route('research.viewApprovedProposalFile', $research->id) }}' class='btn btn-link' target='_blank' >View Approved File</a></li>
-                                                            @endif
-                                                            @if ($research->terminal_file)
-                                                                <li><a href='{{ route('research.viewTerminalFile', $research->id) }}' target='_blank'class='btn btn-link'>View Terminal File</a></li>
-                                                            @endif
-                                                            @if ($research->proposal_file)
-                                                                <li><a href='{{ route('research.viewProposalFile', $research->id) }}' target='_blank' class='btn btn-link'>View Proposal File</a></li>
-                                                            @endif
-                                                        </ul>"
-                                                    >
-                                                        {{ $research->title }}
-                                                    </a>
-                                                    <hr style="border-top: 2px solid white;">
-                                                    
-                                                    <!-- Flexbox to align Approved and Completed on the same row -->
-                                                    <div class="d-flex justify-content-between mb-1">
-                                                        <p style="color: black;"><strong style="color: black;">Approved:</strong> 
-                                                            {{ $research->approved_date ? \Carbon\Carbon::parse($research->approved_date)->format('F d, Y') : 'Not Approved Yet' }}
-                                                        </p>
-                                                        <p style="color: black;"><strong style="color: black;">Completed:</strong> 
-                                                            {{ $research->date_completed ? \Carbon\Carbon::parse($research->date_completed)->format('F d, Y') : 'Not Completed Yet' }}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
+                        <div class="card shadow-sm border-0 mb-4" style="border-radius: 12px; overflow: hidden;">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <div class="table table-borderless mb-0">
+                <!-- Header Row -->
+                <div class="d-none d-md-flex fw-bold border-bottom py-2 px-3 text-dark" style="background-color: #f8f9fa;">
+                    <div class="col-md-5">Title</div>
+                    <div class="col-md-3">Approved Date</div>
+                    <div class="col-md-3">Completed Date</div>
+                </div>
+
+                <!-- Research Rows -->
+                @foreach ($researches as $research)
+                    <div class="row align-items-center border-bottom py-2 px-3" style="background-color: #ffffff;">
+                        <!-- Title -->
+                        <div class="col-md-5">
+                            <a href="#"
+                               class="text-dark fw-medium hover-link"
+                               style="font-size: 0.95rem;"
+                               data-bs-toggle="popover"
+                               data-bs-html="true"
+                               data-bs-placement="right"
+                               data-bs-content="
+                                    <ul style='padding-left: 1rem;'>
+                                        @if ($research->certificate_of_utilization)
+                                            <li><a href='{{ route('research.viewCertificate', $research->id) }}' target='_blank' class='btn btn-link p-0'>Certificate</a></li>
+                                        @endif
+                                        @if ($research->special_order)
+                                            <li><a href='{{ route('research.viewSpecialOrder', $research->id) }}' target='_blank' class='btn btn-link p-0'>Special Order</a></li>
+                                        @endif
+                                        @if ($research->approved_file)
+                                            <li><a href='{{ route('research.viewApprovedProposalFile', $research->id) }}' class='btn btn-link p-0' target='_blank'>Approved File</a></li>
+                                        @endif
+                                        @if ($research->terminal_file)
+                                            <li><a href='{{ route('research.viewTerminalFile', $research->id) }}' target='_blank' class='btn btn-link p-0'>Terminal File</a></li>
+                                        @endif
+                                        @if ($research->proposal_file)
+                                            <li><a href='{{ route('research.viewProposalFile', $research->id) }}' target='_blank' class='btn btn-link p-0'>Proposal</a></li>
+                                        @endif
+                                    </ul>
+                               ">
+                                {{ $research->title }}
+                            </a>
                         </div>
+
+                        <!-- Approved Date -->
+                        <div class="col-md-3 text-muted small">
+                            {{ $research->approved_date 
+                                ? \Carbon\Carbon::parse($research->approved_date)->format('M d, Y') 
+                                : 'Not Approved' }}
+                        </div>
+
+                        <!-- Completed Date -->
+                        <div class="col-md-3 text-muted small">
+                            {{ $research->date_completed 
+                                ? \Carbon\Carbon::parse($research->date_completed)->format('M d, Y') 
+                                : 'Not Completed' }}
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+
                     </div>
                 </div>
             </div>
@@ -179,22 +214,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            // Enable Bootstrap popovers on elements with data-toggle="popover"
-            $('[data-toggle="popover"]').popover({
-                trigger: 'focus', // Make popover appear on focus (click)
-                html: true, // Allow HTML content in the popover
-                placement: 'right', // Position the popover on the right side
-                container: 'body' // Ensure the popover doesn't get cut off by a container
-            });
-
-            // Close popovers when clicking outside of the card
-            $(document).click(function(e) {
-                if (!$(e.target).closest('.popover, .card').length) {
-                    $('[data-toggle="popover"]').popover('hide');
-                }
-            });
+        document.addEventListener("DOMContentLoaded", function () {
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => 
+            new bootstrap.Popover(popoverTriggerEl, {
+                html: true,
+                sanitize: false,  // Allow HTML content inside popovers
+                container: 'body',
+                trigger: 'focus'
+            })
+        );
+        
+        // Close popovers when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.popover') && !e.target.closest('[data-bs-toggle="popover"]')) {
+                popoverList.forEach(pop => pop.hide());
+            }
         });
+    });
 
         const sidebar = document.getElementById('sidebar');
         const menuBtn = document.getElementById('menuBtn');

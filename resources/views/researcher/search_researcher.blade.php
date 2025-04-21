@@ -8,30 +8,50 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Search</title>
     <style>
-        .pagination .page-item .page-link {
-            background-color: #7393B3;
-            color: white;
-            border-color: #7393B3;
-        }
 
-        .pagination .page-item.active .page-link {
-            background-color: blue;
-            color: white;
-            border-color: blue;
-        }
+    .nav-tabs .nav-link.active {
+        background-color: #922220;
+        color: white;
+        border-color: #922220 #922220 #fff;
+    }
 
-        .pagination .page-item.active .page-link:hover {
-            background-color: blue;
-            color: white;
-            border-color: blue;
-        }
+    .nav-tabs .nav-link {
+        color: white;
+    }
 
-        .pagination .page-item .page-link:hover {
-            background-color: #922220;
-            color: white;
-            border-color: #922220;
-        }
+       .custom-pagination .pagination {
+    gap: 0.5rem;
+}
 
+.custom-pagination .page-item .page-link {
+    color: #922220;
+    border: 1px solid #922220;
+    border-radius: 8px;
+    padding: 6px 12px;
+    transition: background-color 0.3s;
+}
+
+.custom-pagination .page-item.active .page-link {
+    background-color: #922220;
+    color: #fff;
+    border-color: #922220;
+}
+
+.custom-pagination .page-item.disabled .page-link {
+    color: #aaa;
+    border-color: #ccc;
+}
+.related-file-link {
+    color: black;
+    text-decoration: none;
+    transition: all 0.3s ease; /* Smooth transition for underline */
+}
+
+/* Add underline on hover */
+.related-file-link:hover {
+    text-decoration: underline;
+    color: #922220; /* Optional: change color on hover */
+}
     </style>
 </head>
 <body>
@@ -63,18 +83,14 @@
         <!-- Main Content -->
         <div class="main-content container-fluid";>
             <div class="box text-white p-3 border rounded" style="background-color: #818589;">
-                <div class="text-center mb-4">
+                <div class="text-center mb-3">
                     <h1 class="fs-2" style="color: white;">Search</h1>
                 </div>
-                <div class="row justify-content-center mb-5">
+                <div class="row justify-content-center mb-1">
                 <div class="col-md-8">
                     <form action="{{ route('researchers.search') }}" method="GET" class="mb-4">
-                         <!-- Dropdown to select search type -->
-                         <label for="search_type" class="visually-hidden">Select Search Type</label>
-                        <select name="search_type" id="search_type" class="form-select mb-2" aria-label="Search type">
-                            <option value="researchers" {{ $searchType === 'researchers' ? 'selected' : '' }}>Researchers</option>
-                            <option value="researches" {{ $searchType === 'researches' ? 'selected' : '' }}>Researches</option>
-                        </select>
+                    <input type="hidden" name="search_type" value="{{ $searchType }}">
+                        <!-- Search Input -->
                         <label for="search" class="visually-hidden">Search by name or title</label>
                         <input 
                             id="search"
@@ -84,11 +100,27 @@
                             placeholder="Search..." 
                             value="{{ old('search', $search ?? '') }}"
                             aria-label="Search">
-
-                        <!-- Dropdown to select search type -->
-                       
-
+                        
+                        <!-- Search Button (only for search input) -->
                         <button type="submit" class="btn" style="background-color: #922220; color: white;">Search</button>
+
+                         <!-- Dropdown to select search type -->
+                         <div class="d-flex justify-content-center mb-1">
+                        <ul class="nav nav-tabs justify-content-center mb-1">
+    <li class="nav-item">
+        <a class="nav-link {{ $searchType === 'researchers' ? 'active' : '' }}" 
+           href="{{ route('researchers.search', ['search_type' => 'researchers', 'search' => request('search')]) }}">
+            Researchers
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {{ $searchType === 'researches' ? 'active' : '' }}" 
+           href="{{ route('researchers.search', ['search_type' => 'researches', 'search' => request('search')]) }}">
+            Researches
+        </a>
+    </li>
+</ul>
+</div>
                     </form>
 
                     <!-- Display form validation errors -->
@@ -107,7 +139,6 @@
                 <!-- Display Search Results -->
                 <div>
                     @if(isset($researchers))
-                        <h2 class="text-center mb-4 fs-2" style="color: white;">All Researchers</h2>
                         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 researcher-cards">
                             @foreach($researchers as $researcher)
                                 <div class="col ">
@@ -127,70 +158,73 @@
                             @endforeach
                         </div>
                         <div class="d-flex justify-content-center mt-4">
-                            {{ $researchers->links('pagination::bootstrap-4') }}
+                        <div class="custom-pagination">
+                            {{ $researchers->appends(request()->query())->links('pagination::bootstrap-4') }}
+                        </div>
                         </div>
                     @elseif(isset($researches))
-                    <div class="row g-1">
-    @foreach($researches as $research)
-        <!-- Each card will take full width of the row (col-12) -->
-        <div class="col-12">
-            <div class="card shadow-sm w-100" style="border: 2px solid black; border-radius: 10px; margin-bottom: 20px;">
-                <!-- Card Content -->
-                <div class="card-body" style="padding: 15px; display: flex; flex-direction: column;">
-    <!-- Title and Status in the Same Row -->
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h5 class="card-title" style="color: black; font-size: 1.25rem; margin-bottom: 0;">
-            {{ $research->title }}
-        </h5>
-        <p class="card-text" style="color: #922820; font-size: 1rem; margin-bottom: 0;">
-            {{ $research->status }}
-        </p>
-    </div>
+                        <div class="row g-1">
+                            @foreach($researches as $research)
+                                <!-- Each card will take full width of the row (col-12) -->
+                                <div class="col-12">
+                                    <div class="card shadow-sm w-100" style="border: 2px solid black; border-radius: 10px; margin-bottom: 20px;">
+                                        <div class="card-body" style="padding: 15px; display: flex; flex-direction: column;">
+                                            <!-- Title and Status in the Same Row -->
+                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                <h5 class="card-title" style="color: black; font-size: 1.25rem; margin-bottom: 0;">
+                                                    {{ $research->title }}
+                                                </h5>
+                                                <p class="card-text" style="color: #922820; font-size: 1rem; margin-bottom: 0;">
+                                                    {{ $research->status }}
+                                                </p>
+                                            </div>
 
-    <!-- Files Section in the Same Row -->
-    <div class="mt-3" style="display: flex; flex-wrap: wrap; justify-content: flex-start;">
-        <h6 style="color: black; width: 100%; margin-bottom: 5px;">Related Files:</h6>
-        <ul class="list-unstyled d-flex flex-wrap" style="padding-left: 0; margin-bottom: 0;">
-            @if($research->certificate_of_utilization)
-                <li class="mx-2">
-                    <a href="{{ asset('storage/' . $research->certificate_of_utilization) }}" target="_blank" class="text-decoration-none" style="color: black;">
-                        Certificate of Utilization
-                    </a>
-                </li>
-            @endif
+                                            <!-- Files Section in the Same Row -->
+                                            <div class="mt-3" style="display: flex; flex-wrap: wrap; justify-content: flex-start;">
+                                                <h6 style="color: black; width: 100%; margin-bottom: 5px;">Related Files:</h6>
+                                                <ul class="list-unstyled d-flex flex-wrap" style="padding-left: 0; margin-bottom: 0;">
+                                                    @if($research->certificate_of_utilization)
+                                                        <li class="mx-2">
+                                                            <a href="{{ asset('storage/' . $research->certificate_of_utilization) }}" target="_blank"class="related-file-link">
+                                                                Certificate of Utilization
+                                                            </a>
+                                                        </li>
+                                                    @endif
 
-            @if($research->approved_file)
-                <li class="mx-2">
-                    <a href="{{ asset('storage/' . $research->approved_file) }}" target="_blank" class="text-decoration-none" style="color: black;">
-                        Approved Proposal File
-                    </a>
-                </li>
-            @endif
+                                                    @if($research->approved_file)
+                                                        <li class="mx-2">
+                                                            <a href="{{ asset('storage/' . $research->approved_file) }}" target="_blank" class="related-file-link">
+                                                                Approved Proposal File
+                                                            </a>
+                                                        </li>
+                                                    @endif
 
-            @if($research->special_order)
-                <li class="mx-2">
-                    <a href="{{ asset('storage/' . $research->special_order) }}" target="_blank" class="text-decoration-none" style="color: black;">
-                        Special Order
-                    </a>
-                </li>
-            @endif
+                                                    @if($research->special_order)
+                                                        <li class="mx-2">
+                                                            <a href="{{ asset('storage/' . $research->special_order) }}" target="_blank" class="related-file-link">
+                                                                Special Order
+                                                            </a>
+                                                        </li>
+                                                    @endif
 
-            @if($research->terminal_file)
-                <li class="mx-2">
-                    <a href="{{ asset('storage/' . $research->terminal_file) }}" target="_blank" class="text-decoration-none" style="color: black; text-decoration:underline;">
-                        Terminal File
-                    </a>
-                </li>
-            @endif
-        </ul>
-    </div>
-</div>
-            </div>
-        </div>
-    @endforeach
-</div>
-                        <div class="d-flex justify-content-center mt-4 bg-alert">
-                            {{ $researches->links('pagination::bootstrap-4') }}
+                                                    @if($research->terminal_file)
+                                                        <li class="mx-2">
+                                                            <a href="{{ asset('storage/' . $research->terminal_file) }}" target="_blank" class="related-file-link ">
+                                                                Terminal File
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="d-flex justify-content-center mt-4">
+                        <div class="custom-pagination">
+                            {{ $researches->appends(request()->query())->links('pagination::bootstrap-4') }}
+                        </div>
                         </div>
                     @endif
                 </div>
@@ -207,6 +241,10 @@
         menuBtn.addEventListener('click', () => sidebar.classList.add('active'));
         closeBtn.addEventListener('click', () => sidebar.classList.remove('active'));
 
+        // JavaScript to auto load dropdown options when clicked
+        document.getElementById('search_type').addEventListener('change', function () {
+            this.form.submit(); // Submit form when search type is changed
+        });
     </script>
 </body>
 </html>

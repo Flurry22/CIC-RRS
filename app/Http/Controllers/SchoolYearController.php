@@ -9,10 +9,12 @@ class SchoolYearController extends Controller
     /**
      * Show the form for creating a new school year.
      */
-    public function create()
-    {
-        return view('academic_administrator.addschoolyear');  // Render the 'addschoolyear' Blade view
-    }
+
+
+public function create()
+{
+    return view('academic_administrator.addschoolyear');
+}
 
     /**
      * Show the list of all school years.
@@ -20,7 +22,7 @@ class SchoolYearController extends Controller
     public function viewUpdateschoolyear()
     {
         // Fetch all school years from the database
-        $schoolYears = SchoolYear::all();
+        $schoolYears = SchoolYear::orderByDesc('off_sem_end')->get();
 
         // Return the 'updateschoolyear' view with the list of school years
         return view('academic_administrator.viewupdateschoolyear', compact('schoolYears'));
@@ -65,7 +67,7 @@ class SchoolYearController extends Controller
         $schoolYear->delete();
 
         // Redirect to the updateschoolyear view with success message
-        return redirect()->route('school_years.viewUpdateschoolyear')->with('success', 'School year deleted successfully!');
+        return redirect()->route('school_years.viewupdateschoolyear')->with('success', 'School year deleted successfully!');
     }
 
     /**

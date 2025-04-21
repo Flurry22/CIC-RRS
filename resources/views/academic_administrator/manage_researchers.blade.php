@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Researchers</title>
+    
     <link rel="shortcut icon" href="{{ asset('img/cic-logo.png') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{asset('stylesheet/admin/manageResearchers.css')}}">
-    <link rel="shortcut icon" href="{{ asset('img/cic-logo.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('stylesheet/admin/manageResearchers.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
-        /* Custom styles for the profile picture */
+        .card.profile-header {
+    height: 200px; /* Set the fixed height for the card */
+    overflow: hidden; /* Ensure content doesn't overflow */
+}
+        /* === Profile Image === */
         .profile-img {
             width: 100px;
             height: 100px;
             object-fit: cover;
             border-radius: 50%;
-            border: 3px solid #52489f; /* Rounded border frame */
+            border: 3px solid black;
         }
 
-        /* Centering text below the profile picture */
+        /* === Card Styling === */
         .card-body {
             text-align: center;
-        }
-
-        .card-title,
-        .card-text {
-            color: #4c2f6f;
+            overflow-y: auto;
         }
 
         .card-title {
             font-weight: bold;
+            color: black;
         }
 
-        /* Styling the total and ongoing counts in the same row */
+        .card-text {
+            color: black;
+        }
+
+        /* === Active Years === */
         .projects-row {
             display: flex;
             justify-content: space-between;
@@ -48,131 +53,226 @@
             color: #52489f;
         }
 
-        .badge-active {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #28a745;  /* Green color */
-            color: white;
-            padding: 5px 10px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: bold;
+        /* === Toggle Styled Like Badge === */
+        .badge-toggle .form-check-input {
+            width: 3.2rem;
+            height: 1.6rem;
+            background-color: #adb5bd;
+            border-radius: 2rem;
+            position: relative;
+            appearance: none;
+            outline: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
-        .badge-inactive {
-    position: absolute;  /* Positioning to match the active badge */
-    top: 10px;           /* Align vertically with the active badge */
-    right: 10px;         /* Align horizontally with the active badge */
-    background-color: #dc3545;  /* Red color for inactive */
-    color: white;
-    padding: 5px 10px;
-    border-radius: 12px; /* Same border radius for consistency */
-    font-size: 14px;     /* Same font size for consistency */
-    font-weight: bold;   /* Same font weight for consistency */
+
+        .badge-toggle .form-check-input::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 1.2rem;
+            height: 1.2rem;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .badge-toggle .form-check-input:checked {
+            background-color: #198754;
+        }
+
+        .badge-toggle .form-check-input:checked::before {
+            transform: translateX(1.6rem);
+            box-shadow: none;
+            outline: none;
+        }
+        .badge-toggle .form-check-input:focus {
+    box-shadow: none;
+    outline: none;
+}
+.profile-divider {
+    width: 60%; /* Set the width of the <hr> to 60% of the container */
+    margin: 10px auto; /* Center align it horizontally with some spacing */
+    border-top: 2px solid #ccc; /* Add a border to the <hr> */
+}
+.custom-pagination .pagination {
+    gap: 0.5rem;
+}
+
+.custom-pagination .page-item .page-link {
+    color: #922220;
+    border: 1px solid #922220;
+    border-radius: 8px;
+    padding: 6px 12px;
+    transition: background-color 0.3s;
+}
+
+.custom-pagination .page-item.active .page-link {
+    background-color: #922220;
+    color: #fff;
+    border-color: #922220;
+}
+
+.custom-pagination .page-item.disabled .page-link {
+    color: #aaa;
+    border-color: #ccc;
 }
     </style>
 </head>
 
 <body>
+<div class="wrapper container-fluid w-auto p-0 m-0">
 
-    <div class="wrapper container-fluid w-auto p-0 m-0">
+    <!-- Sidebar & Header -->
+    <div class="header container-fluid p-0">
+        <button class="menu-btn" id="menuBtn">&#9776;</button>
+    </div>
 
-        <div class="header container-fluid p-0">
-            <button class="menu-btn" id="menuBtn">&#9776;</button>
+    <div class="sidebar" id="sidebar">
+        <button class="close-btn" id="closeBtn">&times;</button>
+        <img src="{{ asset('img/cic-logo.png') }}" alt="usep-logo">
+        <h3>USeP-College of Information and Computing</h3>
+        <h4>Research Repository System</h4>
+        <hr class="w-100 border-3">
+        <ul>
+            <li><a href="{{ route('academic_administrator.dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ route('academic_administrator.manage_research') }}">Manage Research</a></li>
+            <li><a href="{{ route('manage.researchers') }}">Manage Researchers</a></li>
+            <li><a href="{{ route('school_years.viewUpdateschoolyear') }}">School Years</a></li>
+            <li>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+            </li>
+        </ul>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    </div>
+
+    <div class="main-content container-fluid"style="background-color:  #818589;">
+    <div class="container mt-4">
+        <h1 class="mb-4"style="color: white;">Manage Researchers</h1>
+        <div class="alert alert-info">
+            <strong>{{ $activeResearchers }} Active Researchers</strong> out of <strong>{{ $totalResearchers }}</strong> total researchers.
         </div>
-        <div class="sidebar" id="sidebar">
-                <button class="close-btn" id="closeBtn">&times;</button>
-                <img src="{{ asset('img/cic-logo.png') }}" alt="usep-logo">
-                <h3>USeP-College of Information and Computing</h3>
-                <h4>Research Repository System</h4>
-                <hr class="w-100 border-3">
-                <ul>
-                    <li><a href="{{ route('academic_administrator.dashboard') }}">Dashboard</a></li>
-                    <li><a href="{{ route('academic_administrator.manage_research') }}">Manage Research</a></li>
-                    <li><a href="{{ route('manage.researchers') }}">Manage Researchers</a></li>
-                    <li><a href="{{ route('school_years.viewUpdateschoolyear') }}">School Years</a></li>
-                    <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
-                </ul>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-        </div>
 
-        <div class="main-content container-fluid">
-            <div class="box p-2 rounded-2 text-white" style="background-color: #818589;">
-                <h1 class=" fs-2" style="color: white; font-weight: bold;">Manage Researchers</h1>
-
-                <div class="alert alert-info  mt-4" style="background-color: #f5f3f9; color: black; border: 0.5px solid black;">
-                    <strong>{{ $activeResearchers }} Active Researchers</strong> out of <strong>{{ $totalResearchers }}</strong> total researchers.
-                </div>
-
-            
-                <div class="row">
-                    @foreach($researchers as $researcher)
-                    <div class="col-md-4 mb-4">
-                        <div class="card shadow-sm border-2" style="border: 0.5px solid black;">
-                            <img class="card-img-top profile-img mx-auto d-block mt-2 " style="border: 2px solid black;" src="{{ $researcher->profile_picture ? Storage::url($researcher->profile_picture) : asset('img/default-profile.png') }}" alt="Profile Picture">
-                            <div class="card-body">
-                            
-        @if($researcher->researches->where('status', 'On-Going')->isNotEmpty())
-            <span class="badge badge-active">Active</span>
-        @else
-            <span class="badge badge-inactive" style="background-color: #922220;">Inactive</span>
-        @endif
-                                <h5 class="card-title" style="color: black;">{{ $researcher->name }}</h5>
-                                <p class="card-text" style="color: gray;">{{ $researcher->position }}</p>
-
-                                <!-- Total Projects and Ongoing Projects in the same row -->
-                                <div class="projects-row">
-                                    <p><span class="projects-label" style="color: black;">Total Projects:</span> {{ $researcher->researches->count() }}</p>
-                                    <p><span class="projects-label" style="color: black;">Ongoing Projects:</span> 
-                                        {{ $researcher->researches->filter(function($research) {
-                                            return $research->status === 'Ongoing';
-                                        })->count() }}
-                                    </p>
+        <div class="container profile-page">
+    <div class="row">
+        @foreach($researchers as $researcher)
+            <div class="col-xl-6 col-lg-7 col-md-12 mb-4">
+                <div class="card profile-header shadow-sm position-relative">
+                    <div class="body p-3">
+                        <div class="row align-items-center">
+                            <!-- Profile Picture -->
+                            <div class="col-lg-4 col-md-4 col-12 text-center mb-3 mb-md-0">
+                                <div class="profile-image">
+                                    <img src="{{ $researcher->profile_picture ? Storage::url($researcher->profile_picture) : asset('img/default-profile.png') }}" 
+                                        alt="Profile Picture" 
+                                        class="img-fluid rounded-circle border border-dark" 
+                                        style="width: 100px; height: 100px; object-fit: cover;">
                                 </div>
 
-                                <p class="card-text" style="color: gray;">
-                                    @if(is_array($researcher->skills))
-                                        {{ implode(', ', $researcher->skills) }}
-                                    @elseif($researcher->skills)
-                                        {{ $researcher->skills }}
+                                <!-- Position below image -->
+                               
+
+                                <!-- Horizontal Rule below the image -->
+                                <hr class="profile-divider">
+                                <span class="job_post text-muted d-block mt-2">{{ $researcher->position }}</span>
+                            </div>
+
+                            <!-- Info and Buttons -->
+                            <div class="col-lg-8 col-md-8 col-12">
+                                <h4 class="m-0">
+                                    <strong>{{ $researcher->name }}</strong>
+                                </h4>
+                                
+                                <!-- Email replaces position -->
+                                <span class="text-muted">{{ $researcher->email }}</span>
+
+                                <!-- Status Toggle -->
+                                <form method="POST" 
+                                    action="{{ route('academic_administrator.manage_researchers.updateStatus', $researcher->id) }}" 
+                                    class="position-absolute top-0 end-0 m-2">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="form-check form-switch badge-toggle"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="left"
+                                        data-bs-title="{{ $researcher->researcher_status === 'Active' ? 'Active' : 'Inactive' }}">
+                                        <input type="checkbox"
+                                            class="form-check-input toggle-input"
+                                            id="statusSwitch{{ $researcher->id }}"
+                                            name="researcher_status"
+                                            value="Active"
+                                            {{ $researcher->researcher_status === 'Active' ? 'checked' : '' }}>
+                                    </div>
+                                </form>
+
+                                <!-- Active Years -->
+                                <div class="mt-3">
+                                    <p class="fw-bold mb-1">Active Years:</p>
+                                    @if($researcher->activeYears->isNotEmpty())
+                                        <div class="d-flex flex-wrap gap-2">
+                                            @foreach($researcher->activeYears->sortDesc() as $year)
+                                                <span class="badge" style="background-color: #922220;">{{ $year }}</span>
+                                            @endforeach
+                                        </div>
                                     @else
-                                        No skills available
+                                        <p class="text-muted small">None</p>
                                     @endif
-                                </p>
-                                <p class="card-text" style="color: #888;">
-                                    <small>{{ $researcher->email }}</small>
-                                </p>
+                                </div>
+
                             </div>
                         </div>
                     </div>
-                    @endforeach
-                </div>
-                <div class="d-flex justify-content-center mt-4">
-                    <!-- Render Pagination Links -->
-                    {{ $researchers->onEachSide(1)->links('pagination::bootstrap-4') }}
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
+</div>
 
+
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4">
+    <div class="custom-pagination">
+        {{ $researchers->onEachSide(1)->links('pagination::bootstrap-4') }}
+    </div>
+</div>
+    </div>
+</div>
+</div>
+
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    const sidebar = document.getElementById('sidebar');
-    const menuBtn = document.getElementById('menuBtn');
-    const closeBtn = document.getElementById('closeBtn');
+    document.querySelectorAll('.toggle-input').forEach(function(toggle) {
+        toggle.addEventListener('change', function () {
+            const form = this.closest('form');
 
-    // Show sidebar
-    menuBtn.addEventListener('click', () => {
-        sidebar.classList.add('active');
+            // If unchecked, send 'Inactive'
+            if (!this.checked) {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'researcher_status';
+                hiddenInput.value = 'Inactive';
+                form.appendChild(hiddenInput);
+            }
+
+            form.submit();
+        });
     });
 
-    // Hide sidebar
-    closeBtn.addEventListener('click', () => {
-        sidebar.classList.remove('active');
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+        const tooltip = new bootstrap.Tooltip(el);
+
+        const input = el.querySelector('input[type="checkbox"]');
+        input.addEventListener('change', function () {
+            const newTitle = this.checked ? 'Active' : 'Inactive';
+            el.setAttribute('data-bs-original-title', newTitle); // Update tooltip title
+            tooltip.setContent({ '.tooltip-inner': newTitle }); // Bootstrap 5.3+ dynamic update
+        });
     });
 </script>
 </body>
-
 </html>

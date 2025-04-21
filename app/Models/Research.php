@@ -55,9 +55,10 @@ class Research extends Model
      * The pivot table is 'researcher_research'.
      */
     public function researchers()
-    {
-        return $this->belongsToMany(Researcher::class, 'researcher_research', 'research_id', 'researcher_id');
-    }
+{
+    return $this->belongsToMany(Researcher::class, 'researcher_research', 'research_id', 'researcher_id')
+        ->withPivot('role');
+}
 
 
     /**

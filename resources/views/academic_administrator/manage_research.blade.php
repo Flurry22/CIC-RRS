@@ -81,13 +81,15 @@
                                 <option value="" {{ old('status', $statusFilter) === '' ? 'selected' : '' }}>All</option>
                                 <option value="on-going" {{ old('status', $statusFilter) === 'on-going' ? 'selected' : '' }}>On-Going</option>
                                 <option value="finished" {{ old('status', $statusFilter) === 'finished' ? 'selected' : '' }}>Finished</option>
+                                <option value="overdue" {{ old('status', $statusFilter) === 'overdue' ? 'selected' : '' }}>Overdue</option>
+                                
                             </select>
                         </form>
 
                         {{-- <button id="show-calendar-btn" class="btn" style="background-color: #922220; color: white;">Show Deadlines Calendar</button> --}}
                     </div>
                     <!-- Row for Analytics and Calendar -->
-                    <div class="row mt-4">
+                    <div class="row mt-4 pb-3">
                         <!-- Analytics Section -->
                         <div class="col-md-12">
                             <div class="analytics-div p-4" style="background-color: white; border-radius: 10px; margin-bottom: 20px;">
@@ -108,123 +110,202 @@
                                 </div>
                             </div>
                         </div>
+                    
+                        <!-- Undergraduate Research Projects -->
+                        <div class="container mt-3 p-4" style="background-color: white; border-radius: 10px; max-width: 98%; padding: 10px; margin: auto;">
+                            <h3 class="mb-4" style="font-weight: bold; font-size: 20px; color: black;">Undergraduate Research Projects</h3>
+                            
+                            <div class="row p-2" id="researchContainer">
+                                @forelse($undergraduateResearches as $key => $research)
+                                    <div class="col-12 mb-3 research-item" style="{{ $key >= 3 ? 'display: none;' : '' }}"> 
+                                        <div class="card shadow-sm h-100 w-100 border-1 border-black">
+                                            <div class="card-body d-flex flex-column">
+                                                <h4 class="card-title" style="font-size: 20px; font-weight: bold; margin-bottom: 10px; color: black;">
+                                                    {{ $research->title }}
+                                                </h4>
+                                                <hr>
+                                                <div class="content-contiainer d-flex justify-content-between align-items-center gap-5">
+                                                    <div class="leader-section flex-grow-1" style="color: black; max-width: 250px;">
+                                                        <strong>Leader:</strong>
+                                                        <span class="leader-name" style="font-weight: bold; color: gray;">
+                                                            {{ $research->leader->name ?? 'N/A' }}
+                                                        </span>
+                                                    </div>
+                
+                                                    <div class="text-center flex-grow-1">
+                                                        <strong>Status:</strong>
+                                                        <span class="badge" style="font-size: 12px; background-color: {{ $research->status === 'On-Going' ? '#922220' : '#118B50' }};">
+                                                            {{ $research->status }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="text-center flex-grow-1">
+                                                    <strong>Program:</strong> @if($research->programs->isNotEmpty())
+                                                                @foreach($research->programs as $program)
+                                                                    {{ $program->name }}@if(!$loop->last), @endif
+                                                                @endforeach
+                                                            @else
+                                                                N/A
+                                                            @endif
+                                                    </div>
+                                                
+                                                    <div class="text-center flex-grow-1" style="color: black;">
+                                                        <div>
+                                                            <strong>Deadline:</strong> {{ \Carbon\Carbon::parse($research->deadline)->format('d-m-Y') }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <p class="text-center col-12" style="font-size: 14px; color: #888;">No undergraduate research projects available.</p>
+                                @endforelse
+                            </div>
+                        
+                            <!-- Show More Button (Always Visible) -->
+                            <div class="text-center mt-3">
+                                <button id="toggleBtn" class="btn" style="background-color:#922220; color:white;">Show All</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Graduate Research Projects -->
+                        <div class="container mt-3 p-4" style="background-color: white; border-radius: 10px; max-width: 98%; padding: 10px; margin: auto;">
+                            <h3 class="mb-4" style="font-weight: bold; font-size: 20px; color: black;">Graduate Research Projects</h3>
+
+                            <div class="row p-2" id="researchContainer">
+
+                                @forelse($graduateResearches as $key => $research)
+                                    <div class="col-12 mb-3 research-grad" style="{{ $key >= 3 ? 'display: none;' : '' }}"> <!-- Added col-md-4 for responsive layout and mb-3 for spacing between cards -->
+                                        <div class="card shadow-sm h-100 border-1 border-black"> <!-- Added h-100 to make cards the same height -->
+                                            <div class="card-body d-flex flex-column"> <!-- Added d-flex and flex-column for vertical alignment -->
+                                                <h4 class="card-title" style="font-size: 20px; font-weight: bold; margin-bottom: 10px; color: black;"> <!-- Reduced font-size -->
+                                                    {{ $research->title }}
+                                                </h4>
+                                                <hr>
+                                                <div class=" d-flex justify-content-between align-items-center">
+
+                                                    <div class="leader-section flex-grow-1 " style="color: black; max-width: 250px;"> <!-- Reduced margin-bottom to mb-2 -->
+                                                        <strong>Leader:</strong>
+                                                        <span class="leader-name" style="font-weight: bold; color: gray;">
+                                                            {{ $research->leader->name ?? 'N/A' }}
+                                                        </span>
+                                                    </div>
+                                                    
+                                                    <div class="text-center flex-grow-1">
+                                                        <strong>Status:</strong>
+                                                        <span class="badge" style="font-size: 12px; background-color: {{ $research->status === 'On-Going' ? '#922220' : '#118B50' }};">
+                                                            {{ $research->status }}
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="text-center flex-grow-1">
+                                                        <strong>Program:</strong> @if($research->programs->isNotEmpty())
+                                                            @foreach($research->programs as $program)
+                                                                {{ $program->name }}@if(!$loop->last), @endif
+                                                            @endforeach
+                                                        @else
+                                                            N/A
+                                                        @endif
+                                                    </div>
+                                                    
+                                                    <div class="text-center flex-grow-1" style="color: black;">
+                                                        <div>
+                                                            <strong>Deadline:</strong> {{ \Carbon\Carbon::parse($research->deadline)->format('d-m-Y') }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <p class="text-center col-12" style="font-size: 14px; color: #888;">No graduate research projects available.</p>
+                                @endforelse
+                            </div>
+                            <!-- Show More Button (Always Visible) -->
+                            <div class="text-center mt-3">
+                                <button id="showBtn" class="btn" style="background-color:#922220; color:white;">Show All</button>
+                            </div>
+                        </div>
 
 
-                 
-
-                    <!-- Undergraduate Research Projects -->
-                    <div class="container mt-3 p-4" style="background-color: white; border-radius: 10px; max-width: 98%; padding: 10px; margin: auto;">
-    <h3 class="mb-4" style="font-weight: bold; font-size: 20px; color: black;">Undergraduate Research Projects</h3>
-    <div class="row">
-        @forelse($undergraduateResearches as $research)
-            <div class="col-md-4 mb-3"> <!-- Added col-md-4 for responsive layout and mb-3 for spacing between cards -->
-                <div class="card shadow-sm h-100"> <!-- Added h-100 to make cards the same height -->
-                    <div class="card-body d-flex flex-column"> <!-- Added d-flex and flex-column for vertical alignment -->
-                        <h4 class="card-title" style="font-size: 20px; font-weight: bold; margin-bottom: 10px; color: black;">
-                            {{ $research->title }}
-                        </h4>
-                        <hr>
-                        <div class="leader-section mb-2" style="color: black;"> <!-- Reduced margin-bottom to mb-2 -->
-                            <strong>Leader:</strong>
-                            <span class="leader-name" style="font-weight: bold; color: gray;">
-                                {{ $research->leader->name ?? 'N/A' }}
-                            </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Calendar Modal -->
+            <div id="calendar-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="calendarModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="calendarModalLabel">Research Deadlines Calendar</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="d-flex justify-content-between mb-2" style="color: black;">
-                            <div>
-                                <strong>Status:</strong>
-                                <span class="badge" style="font-size: 12px; background-color: {{ $research->status === 'On-Going' ? '#922220' : '#118B50' }};">
-                                    {{ $research->status }}
-                                </span>
-                            </div>
-                            <div>
-                                <strong>Program:</strong> {{ $research->program->name ?? 'N/A' }}
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between mb-3" style="color: black;">
-                            <div>
-                                <strong>Deadline:</strong> {{ \Carbon\Carbon::parse($research->deadline)->format('d-m-Y') }}
-                            </div>
-                        </div>
-                        <div class="mt-auto">
-                            <!-- Additional spacing if needed -->
+                        <div class="modal-body">
+                            <div id="calendar"></div> <!-- Calendar will be inserted here -->
                         </div>
                     </div>
                 </div>
             </div>
-        @empty
-            <p class="text-center col-12" style="font-size: 14px; color: #888;">No undergraduate research projects available.</p>
-        @endforelse
     </div>
-</div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleBtn = document.getElementById("toggleBtn");
+            const researchItems = document.querySelectorAll(".research-item");
+            const itemsToShow = 3;
+            let expanded = false;
+    
+            function updateVisibility() {
+                researchItems.forEach((item, index) => {
+                    if (expanded || index  < itemsToShow) {
+                        item.style.display = "block";
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+    
+                toggleBtn.textContent = expanded ? "Show Less" : "Show All";
+            }
+    
+            toggleBtn.addEventListener("click", function () {
+                expanded = !expanded;
+                updateVisibility();
+            });
+    
+            updateVisibility(); // Ensure only 3 items are shown at first
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleBtn = document.getElementById("showBtn");
+            const researchItems = document.querySelectorAll(".research-grad");
+            const itemsToShow = 3;
+            let expanded = false;
+
+            function updateVisibility() {
+                researchItems.forEach((item, index) => {
+                    if (expanded || index  < itemsToShow) {
+                        item.style.display = "block";
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+
+                toggleBtn.textContent = expanded ? "Show Less" : "Show All";
+            }
+
+            toggleBtn.addEventListener("click", function () {
+                expanded = !expanded;
+                updateVisibility();
+            });
+
+            updateVisibility(); // Ensure only 3 items are shown at first
+        });
+    </script>
 
 
-                    <!-- Graduate Research Projects -->
-                    <div class="container mt-3" style="background-color: white; border-radius: 10px; max-width: 98%; padding: 10px; margin: auto;">
-    <h3 class="mb-4" style="font-weight: bold; font-size: 20px; color: black;">Graduate Research Projects</h3>
-    <div class="row">
-        @forelse($graduateResearches as $research)
-            <div class="col-md-4 mb-3"> <!-- Added col-md-4 for responsive layout and mb-3 for spacing between cards -->
-                <div class="card shadow-sm h-100"> <!-- Added h-100 to make cards the same height -->
-                    <div class="card-body d-flex flex-column"> <!-- Added d-flex and flex-column for vertical alignment -->
-                        <h4 class="card-title" style="font-size: 20px; font-weight: bold; margin-bottom: 10px; color: black;"> <!-- Reduced font-size -->
-                            {{ $research->title }}
-                        </h4>
-                        <hr>
-                        <div class="leader-section mb-2" style="color: black;"> <!-- Reduced margin-bottom to mb-2 -->
-                            <strong>Leader:</strong>
-                            <span class="leader-name" style="font-weight: bold; color: gray;">
-                                {{ $research->leader->name ?? 'N/A' }}
-                            </span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2" style="color: black;">
-                            <div>
-                                <strong>Status:</strong>
-                                <span class="badge" style="font-size: 12px; background-color: {{ $research->status === 'On-Going' ? '#922220' : '#118B50' }};">
-                                    {{ $research->status }}
-                                </span>
-                            </div>
-                            <div>
-                                <strong>Program:</strong> {{ $research->program->name ?? 'N/A' }}
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between mb-3" style="color: black;">
-                            <div>
-                                <strong>Deadline:</strong> {{ \Carbon\Carbon::parse($research->deadline)->format('d-m-Y') }}
-                            </div>
-                        </div>
-                        <div class="mt-auto">
-                            <!-- Additional spacing if needed -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @empty
-            <p class="text-center col-12" style="font-size: 14px; color: #888;">No graduate research projects available.</p>
-        @endforelse
-    </div>
-</div>
-
-                </div>
-            </div>
-        </div>
-
-
-
-                <!-- Calendar Modal -->
-<div id="calendar-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="calendarModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="calendarModalLabel">Research Deadlines Calendar</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="calendar"></div> <!-- Calendar will be inserted here -->
-            </div>
-        </div>
-    </div>
-</div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -235,7 +316,7 @@
                 datasets: [{
                     label: 'Number of Researches',
                     data: [{{ $undergraduateResearches->count() }}, {{ $graduateResearches->count() }}],
-                    backgroundColor: ['#FFB668', '#ff8282'],
+                    backgroundColor: ['#818589', '#922220'],
                     hoverOffset: 4
                 }]
             };
@@ -252,7 +333,7 @@
                         {{ $researchTypeCounts['Project'] }},
                         {{ $researchTypeCounts['Study'] }}
                     ],
-                    backgroundColor: [' #64C4FF', '#ff8282', '#FFB668'],
+                    backgroundColor: [' #64C4FF', '#818589', '#922220'],
                     hoverOffset: 4
                 }]
             };
@@ -306,6 +387,7 @@ $(document).ready(function() {
     });
 });
 </script>
+
 </body>
 
 </html>

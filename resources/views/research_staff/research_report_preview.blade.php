@@ -48,7 +48,7 @@
     <!-- Report Info -->
     <div class="mt-5 text-center">
         <span>Report Description: {{ $request->description }}</span>
-        <span style="margin-left: 50px;">Date: {{ now()->format('F d, Y') }}</span>
+        <span style="margin-left: 50px;">Date Generated: {{ now()->format('F d, Y') }}</span>
     </div>
 
     <!-- Table -->
@@ -62,11 +62,10 @@
                 <th>Project Team</th>
                 <th>Funding Source</th>
                 <th>Collaborating College/Agency</th>
-                <th>Field of Study</th>
                 <th>Status</th>
                 <th>Terminal Reports</th>
                 <th>Year Completed</th>
-                <th>Task</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -87,11 +86,10 @@
 </td>
                 <td>{{ $research->fundingType->type }}</td>
                 <td>{{ $research->funded_by ?? 'N/A' }}</td>
-                <td>{{ $research->field_of_study }}</td>
                 <td>{{ ucfirst($research->status) }}</td>
                 <td>{{ $research->terminal_file ? 'Yes' : 'N/A' }}</td>
-                <td>{{ $research->year_completed ?? 'N/A' }}</td>
-                <td>{{ $research->task ?? 'N/A' }}</td>
+                <td>{{ $research->date_completed ? \Carbon\Carbon::parse($research->date_completed)->format('Y') : 'N/A' }}</td>
+                
             </tr>
             @endforeach
         </tbody>

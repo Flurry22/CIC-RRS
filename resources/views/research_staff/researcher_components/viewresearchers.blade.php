@@ -147,47 +147,60 @@
 
                 <!-- new -->
                 <div class="row mt-4">
-                    @foreach ($researchers as $researcher)
-                        <div class="col-md-4 mb-4">
-                            <div class="card" style="border: black;">
-                                <div class="card-body text-center">
-                                    <a href="{{ route('researcher.repository', $researcher->id) }}" style="text-decoration: none;">
-                                        <img 
-                                            src="{{ $researcher->profile_picture ? Storage::url($researcher->profile_picture) : asset('img/default-profile.png') }}" 
-                                            alt="{{ $researcher->name }}" 
-                                            class="rounded-circle mb-3" 
-                                            style="width: 100px; height: 100px; object-fit: cover; border: 1.5px solid black;">
-                                        <h5 class="card-title" style="color: black;">{{ $researcher->name }}</h5>
-                                    </a>
-                                    <p class="card-text">{{ $researcher->position }}</p>
-                                    <p class="card-text">{{ $researcher->email }}</p>
+    @foreach ($researchers as $researcher)
+        <div class="col-md-4 mb-4">
+            <div class="card" style="border: 1px solid black;">
+                <div class="card-body text-center position-relative">
+                    <!-- Generate Report Button (Top Right) -->
+                    <button type="button" class="btn btn-sm position-absolute" 
+                            style="top: 5px; right: 5px; background-color: #7393B3; color: white; transition: background-color 0.3s ease;" 
+                            onmouseover="this.style.backgroundColor='#5f7f9d';" onmouseout="this.style.backgroundColor=' #7393B3';"
+                            data-toggle="modal" data-target="#generateReportModal"
+                            data-researcher-id="{{ $researcher->id }}" data-researcher-name="{{ $researcher->name }}">
+                        Generate Report
+                    </button>
 
-                                    <!-- Edit Button -->
-                                    <button type="button" class="btn edit-researcher-btn" style="background-color: #7393B3; color: white;"
-                                        data-toggle="modal"
-                                        data-target="#editModal"
-                                        data-id="{{ $researcher->id }}"
-                                        data-name="{{ $researcher->name }}" 
-                                        data-email="{{ $researcher->email }}"
-                                        data-position="{{ $researcher->position }}"
-                                        data-programs="{{ json_encode($researcher->programs->pluck('id')->toArray()) }}">
-                                        Edit
-                                    </button>
-                                <!-- end -->
-                    
-                                    <form action="{{ route('researchers.destroy', $researcher->id) }}" method="POST" style="display: inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" 
-                                            onclick="return confirm('Are you sure you want to delete this researcher?');">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+                    <!-- Profile Picture and Details -->
+                    <a href="{{ route('researcher.repository', $researcher->id) }}" style="text-decoration: none;">
+                        <img src="{{ $researcher->profile_picture ? Storage::url($researcher->profile_picture) : asset('img/default-profile.png') }}" 
+                             alt="{{ $researcher->name }}" 
+                             class="rounded-circle mb-3" 
+                             style="width: 100px; height: 100px; object-fit: cover; border: 1.5px solid black;">
+                        <h5 class="card-title" style="color: black;">{{ $researcher->name }}</h5>
+                    </a>
+                    <p class="card-text">{{ $researcher->position }}</p>
+                    <p class="card-text">{{ $researcher->email }}</p>
+
+                    <!-- Buttons for Edit and Delete (Bottom) -->
+                    <div class="mt-3">
+                        <!-- Edit Button -->
+                        <button type="button" class="btn btn-sm edit-researcher-btn"
+        style="background-color: #7393B3; color: white; transition: background-color 0.3s ease;"
+        onmouseover="this.style.backgroundColor='#5f7f9d';" onmouseout="this.style.backgroundColor='#7393B3';"
+        data-toggle="modal" data-target="#editModal"
+        data-id="{{ $researcher->id }}" data-name="{{ $researcher->name }}" 
+        data-email="{{ $researcher->email }}" data-position="{{ $researcher->position }}"
+        data-programs="{{ json_encode($researcher->programs->pluck('id')->toArray()) }}">
+    Edit
+</button>
+                        <!-- Delete Button -->
+                        <form action="{{ route('researchers.destroy', $researcher->id) }}" method="POST" style="display: inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger" 
+                                    onclick="return confirm('Are you sure you want to delete this researcher?');">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
                 </div>
+            </div>
+        </div>
+    @endforeach
+</div>
+
+
+                 
 
                 <div class="d-flex justify-content-center mt-4">
                     <!-- Render Pagination Links -->
@@ -257,12 +270,82 @@
         </div>
     </div>
 
+    <div class="modal fade" id="generateReportModal" tabindex="-1" role="dialog" aria-labelledby="generateReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="generateReportModalLabel"> <span id="researcherName"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="generateReportForm" action="" method="GET">
+                    <!-- Description Input -->
+                    <div class="form-group">
+                        <label for="description">Report Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <!-- Status and Role Selection -->
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="All">All</option>
+                            <option value="On-Going">On-Going</option>
+                            <option value="Finished">Finished</option>
+                        </select>
+                    </div>
+                    <!-- Role Selection -->
+                    <div class="form-group">
+                        <label for="role">Role</label>
+                        <select class="form-control" id="role" name="role">
+                            <option value="All">All</option>
+                            <option value="leader">Leader</option>
+                            <option value="member">Member</option>
+                        </select>
+                    </div>
+                    <!-- Hidden input for the researcher ID -->
+                    <input type="hidden" id="researcher_id" name="researcher_id">
+                    <div class="mt-3">
+                    <button type="submit" class="btn" style="background-color: #7393B3; color: white; transition: background-color 0.3s ease;"
+                    onmouseover="this.style.backgroundColor='#5f7f9d';" onmouseout="this.style.backgroundColor='#7393B3';">Preview Report</button>
+</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
+  $('#generateReportModal').on('show.bs.modal', function (event) {
+    // Get the button that triggered the modal
+    var button = $(event.relatedTarget);
+
+    // Extract researcher data from the data-* attributes
+    var researcherId = button.data('researcher-id');
+    var researcherName = button.data('researcher-name');
+
+    // Set the modal content dynamically
+    $(this).find('.modal-title #researcherName').text('Generate Report Document for - ' + researcherName);
+
+    // Set the hidden input value for researcher_id
+    $(this).find('#researcher_id').val(researcherId);
+
+    // Dynamically set the form action URL with the researcherId
+    var actionUrl = '{{ route('researchers.report.preview', ':researcherId') }}'.replace(':researcherId', researcherId);
+    $(this).find('#generateReportForm').attr('action', actionUrl);
+});
+
 
     const sidebar = document.getElementById('sidebar');
     const menuBtn = document.getElementById('menuBtn');
@@ -303,5 +386,7 @@
     });
 });
 </script>
+
+
 </body>
 </html>

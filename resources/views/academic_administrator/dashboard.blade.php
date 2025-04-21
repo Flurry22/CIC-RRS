@@ -12,7 +12,18 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+<style>
+    .hover-border {
+        transition: box-shadow 0.3s ease-in-out, transform 0.2s ease-in-out;
+        border: 2px solid transparent; /* Maintain size to prevent shifting */
+    }
 
+    .hover-border:hover {
+        border-color:rgb(206, 207, 208); /* Border color on hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Soft shadow effect */
+        transform: translateY(-3px); /* Slight lift effect */
+    }
+</style>
 <body>
 
     <div class="wrapper container-fluid w-auto h-auto p-0 m-0">
@@ -109,51 +120,249 @@
                                 <label for="password_confirmation" class="form-label" style ="color:black;">Confirm Password</label>
                                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Update Credentials</button>
+                                <button type="submit" class="btn" style="background-color: #922220; color: white;">Update Credentials</button>
                             </form>
                         </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Statistics Section -->
-                <div class="row g-2 mt-5 border-3 border-bottom pb-3 stats">
-                    <div class="col-md-3">
-                        <div class="info-2 rounded-2 p-2" style="background-color: #64C4FF;">
-                            <div class="info-body-1 p-2">
-                                <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $totalResearchers }}</h4>
-                                <p style="color: #3b444b;">Total Researchers</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="info-2 rounded-2 p-2" style="background-color: #FFB668;">
-                            <div class="info-body-2 p-2">
-                                <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $ongoingCount }}</h4>
-                                <p style="color: #3b444b;">Ongoing Projects</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <div class="info-2 rounded-2 p-2" style="background-color: #ff8282;">
-                            <div class="info-body-3 p-2">
-                                <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $overdueCount }}</h4>
-                                <p style="color: #3b444b;">Overdue Projects</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="info-2 rounded-2 p-2" style="background-color: #90EE91;">
-                            <div class="info-body-3 p-2">
-                                <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $finishedCount }}</h4>
-                                <p style="color: #3b444b;">Finished Researches</p>
-                            </div>
-                        </div>
+<div class="row g-2 mt-5 border-3 border-bottom pb-3 stats">
+            <!-- Total Researchers Card -->
+            <div class="col-md-3">
+                <div class="info-2 rounded-2 p-2 hover-border" style="background-color: #64C4FF;" data-bs-toggle="modal" data-bs-target="#totalResearchersModal">
+                    <div class="info-body-1 p-2">
+                        <h4 style="font-size: 1.5rem; color: #3b444b;">{{$totalResearchers}}</h4>
+                        <p style="color: #3b444b;">Total Researchers</p>
                     </div>
                 </div>
+            </div>
+
+            <!-- Ongoing Projects Card -->
+            <div class="col-md-3">
+                <div class="info-2 rounded-2 p-2 hover-border" style="background-color: #FFB668;" data-bs-toggle="modal" data-bs-target="#ongoingProjectsModal">
+                    <div class="info-body-2 p-2">
+                        <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $ongoingCount }}</h4>
+                        <p style="color: #3b444b;">Ongoing Projects</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overdue Projects Card -->
+            <div class="col-md-3">
+                <div class="info-2 rounded-2 p-2 hover-border" style="background-color: #ff8282;" data-bs-toggle="modal" data-bs-target="#overdueResearchesModal">
+                    <div class="info-body-3 p-2">
+                        <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $overdueCount }}</h4>
+                        <p style="color: #3b444b;">Overdue Projects</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Finished Researches Card -->
+            <div class="col-md-3">
+                <div class="info-2 rounded-2 p-2 hover-border" style="background-color: #90EE91;" data-bs-toggle="modal" data-bs-target="#finishedResearchesModal">
+                    <div class="info-body-3 p-2">
+                        <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $finishedCount }}</h4>
+                        <p style="color: #3b444b;">Finished Researches</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- Modal for Total Researchers -->
+<div class="modal fade" id="totalResearchersModal" tabindex="-1" aria-labelledby="totalResearchersModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="totalResearchersModalLabel"  style="color: #3b444b;;">Active Researchers</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                   
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                        <thead class="table-dark text-center">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Researcher Name</th>
+                                    <th>Research Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($totalResearchersDetails as $index => $researcher)
+                                    <tr>
+                                        <td class="text-center">{{ $index + 1 }}</td>
+                                        <td>
+                                            <i class="fas fa-user text-primary me-2"></i> 
+                                            {{ $researcher->name }}
+                                        </td>
+                                        <td class="text-center">
+                                            <span >
+                                                {{ $researcher->researches_count }} 
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ongoingProjectsModal" tabindex="-1" aria-labelledby="ongoingProjectsModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl"> 
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 style="color: #3b444b;">Ongoing Research Projects</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+    @if($ongoingResearches->isEmpty())
+        <div class="alert alert-warning text-center" role="alert">
+            <i class="fas fa-exclamation-circle"></i> No ongoing projects found for the selected filters.
+        </div>
+    @else
+        <div class="container">
+            
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                <thead class="table-dark text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Research Title</th>
+                            <th>Research Leader</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($ongoingResearches as $index => $research)
+                            <tr>
+                                <td class="text-center">{{ $index + 1 }}</td>
+                                <td>{{ $research->title }}</td>
+                                <td>
+                                    
+                                    @if($research->researchers->isEmpty())
+                                        <span class="text-muted">No leader assigned</span>
+                                    @else
+                                     
+                                        {{ $research->researchers->first()->name }}
+                                    @endif
+                                 
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+</div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="overdueResearchesModal" tabindex="-1" aria-labelledby="overdueResearchesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="overdueResearchesModalLabel" style="color: #3b444b;">Overdue Researches</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+    @if($overdueResearches->isEmpty())
+        <p class="text-muted">No overdue research found.</p>
+    @else
+        <!-- Table to display overdue research -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Research Title</th>
+                        <th>Leader</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($overdueResearches as $index => $research)
+                        <tr>
+                            <td class="text-center">{{ $index + 1 }}</td>
+                            <td>{{ $research->title }}</td>
+                            <td>
+                                @if($research->researchers && $research->researchers->isNotEmpty())
+                                    <!-- Show first researcher's name (leader) -->
+                                    <i class="fas fa-user-tie text-primary"></i> {{ $research->researchers->first()->name }}
+                                @else
+                                    <span class="text-warning">No leader assigned</span>
+                                @endif
+                            </td>
+                            <td>{{ \Carbon\Carbon::parse($research->deadline)->format('M d, Y') }}</td>
+                            <td class="text-center">
+                                <!-- Display the status as text without a badge -->
+                                <span class="text-danger">{{ $research->status }}</span>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
+</div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="finishedResearchesModal" tabindex="-1" aria-labelledby="finishedResearchesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="finishedResearchesModalLabel" style="color:black;">Finished Researches</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+    @if($completedResearches->isEmpty())
+        <p class="text-muted">No finished researches found.</p>
+    @else
+        <!-- Table to display completed research -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Research Title</th>
+                        <th> Leader</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($completedResearches as $index => $research)
+                        <tr>
+                            <td class="text-center">{{ $index + 1 }}</td>
+                            <td>{{ $research->title }}</td>
+                            <td>
+                                @if($research->researchers && $research->researchers->isNotEmpty())
+                                    <!-- Display all leaders -->
+                                    @foreach ($research->researchers as $researcher)
+                                        <div>{{ $researcher->name }}</div>
+                                    @endforeach
+                                @else
+                                    <span class="text-warning">No leader assigned</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
+</div>
+        </div>
+    </div>
+</div>
+
+
+
 
                 <!-- Chart Section -->
                 <div class="row mt-4 border-3 border-bottom pb-3 charts ">
@@ -189,7 +398,7 @@
                 <!-- Most and Least Researchers Section -->
                 <!-- Most and Least Researchers Section -->
                 <div class=" mt-4 h-auto researchers">
-                    <h4 class="section-title text-white text-center">Most and Least Active Researchers</h4>
+                    <h4 class="section-title text-white text-center">Researcher Monitoring</h4>
                     <div class="researchers-section d-flex justify-content-center gap-1">
                         
                         <!-- Most Researchers -->
@@ -257,7 +466,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Staff</button>
+                    <button type="submit" class="btn" style="background-color: #922220; color: white;">Create Staff</button>
                 </div>
             </form>
         </div>
@@ -304,19 +513,19 @@
     {
       label: 'Undergraduate Researches',
       data: undergraduateValues,
-      backgroundColor: '#6a5acd',
-      borderColor: '#6a5acd',
+      backgroundColor: ' #818589',
+      borderColor: ' #818589',
       borderWidth: 1
     },
     {
       label: 'Graduate Researches',
       data: graduateValues,
-      backgroundColor: '#ff8282',
-      borderColor: '#FF6347',
+      backgroundColor: ' #922220',
+      borderColor: ' #922220',
       borderWidth: 1
     }
   ];
-
+ 
   const ctx1 = document.getElementById('researchesPerProgramChart').getContext('2d');
   
   new Chart(ctx1, {
@@ -361,8 +570,8 @@ new Chart(ctx2, {
         datasets: [{
             label: 'Number of Researches per SDG',
             data: sdgsData,
-            backgroundColor: '#64C4FF',
-            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: ' #922220',
+            borderColor: ' #922220',
             borderWidth: 1
         }]
     },
@@ -410,8 +619,8 @@ new Chart(ctx3, {
         datasets: [{
             label: 'Number of Researches per DOST 6P',
             data: dost6pData,  // Research counts for each DOST 6P
-            backgroundColor: '#ff8282',  // Light color for bars
-            borderColor: '#ff8282',  // Border color
+            backgroundColor: ' #922220',  // Light color for bars
+            borderColor: ' #922220',  // Border color
             borderWidth: 1
         }]
     },

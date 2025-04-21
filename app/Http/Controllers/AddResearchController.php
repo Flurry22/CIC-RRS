@@ -46,7 +46,7 @@ class AddResearchController extends Controller
         'leader_id' => 'required|exists:researchers,id',
         'members' => 'nullable|array',
         'members.*' => 'exists:researchers,id',
-        'title' => 'required|string|max:255',
+        'title' => 'required|string|max:355',
         'funded_by' => 'nullable|string|max:255',
         'school_year_id' => 'required|exists:school_years,id',
         'semester' => 'required|string|in:First Semester,Second Semester,Off Semester',
@@ -117,42 +117,51 @@ class AddResearchController extends Controller
 }
 
 
-    public function index(Request $request)
-    {
-        // Start with the base query including relationships
-        $query = Research::with(['leader'])->orderBy('id', 'desc');
+public function index(Request $request)
+{
+    // Start with the base query including relationships
+    $query = Research::with(['leader'])
+    ->orderByRaw('COALESCE(approved_date, created_at) DESC') // Sort by date first
+    ->orderBy('title', 'asc');  // Sort by approved_date, fallback to created_at
 
-        // Search by title or leader's name
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhereHas('leader', function ($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%");
-                  });
-            });
-        }
+    // Search by title or leader's name
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', "%{$search}%")
+              ->orWhereHas('leader', function ($q) use ($search) {
+                  $q->where('name', 'like', "%{$search}%");
+              });
+        });
+    }
 
-        // Filter by type
-        if ($request->filled('type')) {
-            $query->where('type', $request->type);
-        }
-        // Filter by status
+    
+    // Filter by type
+    if ($request->filled('type')) {
+        $query->where('type', $request->type);
+    }
+
     if ($request->filled('status')) {
-        $query->where('status', $request->status);
+        if ($request->status === 'overdue') {
+            $query->where('status', '!=', 'Finished')
+                  ->where('deadline', '<', now());
+        } else {
+            $query->where('status', $request->status);
+        }
     }
+    
 
-        // Paginate results
-        $research = $query->paginate(9)->withQueryString();
+    // Paginate results
+    $research = $query->paginate(15)->withQueryString();
 
-        // Pass current search and filter values to the view
-        return view('research_staff.viewresearch', [
-            'research' => $research,
-            'search' => $request->input('search'),
-            'type' => $request->input('type'),
-            'status' => $request->input('status'),
-        ]);
-    }
+    // Pass current search and filter values to the view
+    return view('research_staff.viewresearch', [
+        'research' => $research,
+        'search' => $request->input('search'),
+        'type' => $request->input('type'),
+        'status' => $request->input('status'),
+    ]);
+}
 
     public function destroy($id)
     {

@@ -21,7 +21,7 @@ class ShowResearchController extends Controller
         $deadline = Carbon::parse($research->deadline);
         $remainingDays = $deadline->diffInDays($currentDate, false);
         $delayedDays = max(0, -$remainingDays); // Convert negative to positive
-        $remainingDays = max(0, $remainingDays); // Ensure non-negative remaining days
+        $remainingDays = $deadline->diffInDays($currentDate, false); // Ensure non-negative remaining days
 
         return view('research_staff.showresearch', compact('research', 'allPrograms', 'delayedDays', 'remainingDays'));
     }
@@ -256,6 +256,18 @@ public function downloadSelectedFiles($id)
 
     // Download the ZIP file
     return response()->download($zipFilePath)->deleteFileAfterSend(true);
+}
+public function updateCompletedDate(Request $request, $id)
+{
+    $validated = $request->validate([
+        'date_completed' => 'required|date',
+    ]);
+
+    Research::whereId($id)->update([
+        'date_completed' => $validated['date_completed'],
+    ]);
+
+    return redirect()->route('research.show', $id)->with('success', 'Completed date updated successfully!');
 }
 }
 

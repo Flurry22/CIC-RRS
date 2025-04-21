@@ -22,4 +22,11 @@ class SchoolYear extends Model
     {
         return $this->hasMany(Research::class);
     }
+
+    public function researchers()
+    {
+        return $this->belongsToMany(Researcher::class, 'researcher_status')
+                    ->withPivot('active')
+                    ->withTimestamps();
+    }
 }
