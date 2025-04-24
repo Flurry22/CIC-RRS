@@ -391,7 +391,9 @@
                 </div>
                 <hr class="w-100 border-3">
                 <div class="card-footer d-flex justify-content-center align-items-center mt-4">
-                    <a href="{{ route('research.index') }}" class="btn" style="background-color: #922220; color: white">Back to All Research</a>
+                <a href="{{ route('research.index', ['page' => request('page', 1)]) }}" class="btn" style="background-color: #922220; color: white">
+    Back to All Research
+</a>
                 </div>
             </div>
         </div>

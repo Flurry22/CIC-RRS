@@ -165,7 +165,7 @@
                         <tr class="border-bottom">
                             <!-- Title -->
                             <td class="col-md-5 py-2 px-3">
-                            <a href="{{ route('research.show', ['id' => $researchItem->id]) }}" class="research-title-link">
+                            <a href="{{ route('research.show', ['id' => $researchItem->id, 'page' => request()->get('page', 1)]) }}" class="research-title-link">
     {{ Str::limit($researchItem->title, 100, '...') }}
 </a>
                             </td>

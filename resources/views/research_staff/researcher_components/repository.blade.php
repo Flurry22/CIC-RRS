@@ -74,7 +74,9 @@
                 <div class="box p-4 rounded-2 text-white" style="background-color: #818589;">
                     <!-- Move the Back to Researchers List Button to the left -->
                     <div class="btn-container d-flex justify-content-start mt-1">
-                        <a href="{{ route('researchers.index') }}" class="btn" style="background-color: #922220; color: white; ">Back to Researchers List</a>
+                    <a href="{{ route('researchers.index', ['page' => request('page')]) }}" class="btn" style="background-color: #922220; color: white;">
+    Back to Researchers List
+</a>
                     </div>
 
                     <hr class="w-100 border-3">

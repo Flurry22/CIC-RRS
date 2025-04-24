@@ -121,7 +121,7 @@ public function index(Request $request)
 {
     // Start with the base query including relationships
     $query = Research::with(['leader'])
-    ->orderByRaw('COALESCE(approved_date, created_at) DESC') // Sort by date first
+    ->orderByRaw('COALESCE(approved_date, date_completed, created_at) DESC') // Sort by dates
     ->orderBy('title', 'asc');  // Sort by approved_date, fallback to created_at
 
     // Search by title or leader's name

@@ -161,13 +161,14 @@
                     </button>
 
                     <!-- Profile Picture and Details -->
-                    <a href="{{ route('researcher.repository', $researcher->id) }}" style="text-decoration: none;">
-                        <img src="{{ $researcher->profile_picture ? Storage::url($researcher->profile_picture) : asset('img/default-profile.png') }}" 
-                             alt="{{ $researcher->name }}" 
-                             class="rounded-circle mb-3" 
-                             style="width: 100px; height: 100px; object-fit: cover; border: 1.5px solid black;">
-                        <h5 class="card-title" style="color: black;">{{ $researcher->name }}</h5>
-                    </a>
+                    <a href="{{ route('researcher.repository', $researcher->id) }}?page={{ request('page') }}" style="text-decoration: none;">
+                    <img src="{{ $researcher->profile_picture ? Storage::url($researcher->profile_picture) : asset('img/default-profile.png') }}" 
+                        alt="{{ $researcher->name }}" 
+                        class="rounded-circle mb-3" 
+                        style="width: 100px; height: 100px; object-fit: cover; border: 1.5px solid black;">
+                    <h5 class="card-title" style="color: black;">{{ $researcher->name }}</h5>
+                </a>
+
                     <p class="card-text">{{ $researcher->position }}</p>
                     <p class="card-text">{{ $researcher->email }}</p>
 

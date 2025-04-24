@@ -27,8 +27,8 @@ public function preview(Request $request)
 {
     // Fetch filtered data based on the selected filters
     $query = Research::with(['members', 'programs', 'schoolYear'])
-    ->orderByRaw('COALESCE(approved_date, created_at) DESC') // Sort by approved_date or created_at
-    ->orderBy('title', 'asc');
+    ->orderByRaw('COALESCE(approved_date, date_completed, created_at) DESC') // Sort by dates
+    ->orderBy('title', 'asc'); 
     
 
     if ($request->school_year) {
