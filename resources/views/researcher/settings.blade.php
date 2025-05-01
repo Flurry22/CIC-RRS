@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <title>Settings</title>
 
-
+ 
 
 </head>
 <body>
@@ -42,15 +42,15 @@
         <div class="main-content container-fluid">
             <div class="box text-whit p-3 rounded-2 text-white" style="background-color: #818589;">
                 <h1 style="color: white; font-weight: bold;" class="fs-2">Settings</h1>
-                <div class="form-container mt-5">
+                <div class="form-container mt-3">
                     <!-- Update Profile Picture Form -->
                     <form action="{{ route('researcher.updateProfilePicture') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="img-container">
-                            <img class="profile-picture profile-img mx-auto d-block mt-2 rounded-circle h-25 w-25 border border-black" src="{{ asset('storage/' . $researcher->profile_picture) }}" alt="Profile Picture">
+                            <img class="profile-picture profile-img mx-auto d-block  rounded-circle border border-black" style="height: 200px; width: 200px;" src="{{ asset('storage/' . $researcher->profile_picture) }}" alt="Profile Picture">
                         </div>
-                        <div class="upload d-flex justify-content-center gap-2 mt-2">
-                            <label class=" p-3 rounded-2 btn" style="cursor: pointer; background-color: #922220; color: white;" for="file-upload">Upload Image</label>
+                        <div class="upload d-flex justify-content-center gap-2 mt-4">
+                            <label class="rounded-2 btn" style="cursor: pointer; background-color: #922220; color: white; height: auto; width: auto;" for="file-upload">Upload Image</label>
                             <input  class="d-none" type="file" id="file-upload" name="profile_picture" accept=".jpg, .jpeg, .png, .jfif,">
                             <button type="submit" class="btn" style="background-color: #922220; color: white;" >Update Picture</button>
                         </div>
@@ -58,77 +58,87 @@
 
                     <hr class="w-100 border-3">
 
-                    <!-- Change Password Form -->
-                    <form action="{{ route('researcher.changePassword') }}" method="POST">
+
+
+                    {{-- container for change password and basic information form --}}
+                    <div class="row basic-info">
+                    <div class="col-md-6">
+                        <form action="{{ route('researcher.settings.update') }}" method="POST" enctype="multipart/form-data" class="updateProfileForm">
+                          @csrf
+                          @method('PUT')
+                          <!-- Basic Information -->
+                          <h2 class="text-center" style="color: white;">Basic Information</h2>
+                          <div class="info mt-4">
+                              <label for="first-name" class="form-label" style="color: white;">Edit First Name</label>
+                              <input type="text" id="first-name" name="first_name" class="form-control" value="{{ old('first_name', explode(' ', $researcher->name)[0] ?? '') }}" style="border:1px, solid #52489f">
+                          </div>
+                          <div class="info-2 mt-4">
+                              <label for="last-name" class="form-label" style="color: white;">Edit Last Name</label>
+                              <input type="text" id="last-name" name="last_name" class="form-control" value="{{ old('last_name', explode(' ', $researcher->name)[1] ?? '') }}" style="border:1px, solid #52489f">
+                          </div>
+                          <div class="info-4 mt-4">
+                              <label for="email" class="form-label" style="color: white;">Edit Email Address</label>
+                              <input type="email" id="email" name="email" class="form-control" value="{{ old('email', $researcher->email) }}" style="border:1px, solid #52489f">
+                          </div>
+
+                          <!-- Skills -->
+                          <div class="skill-info mt-4">
+                              <span class="form-label" style="color: white;">Edit Specializations</span>
+                          </div>
+                          <div class="skills">
+                              <div id="skills-container">
+                                  @foreach($skills as $skill)
+                                      <div class="input-group mb-4 mt-3">
+                                          <input type="text" name="skills[]" class="form-control" value="{{ $skill }}" style="border:1px, solid #52489f">
+                                          <button type="button" class="btn btn-danger remove-skill">Remove</button>
+                                      </div>
+                                  @endforeach
+                              </div>
+                              <div class="button-container mt-4 d-flex justify-content-center">
+                                  <button type="button" class="btn w-auto" id="add-skill" style="background-color : #922220;color: white;">Add Specializations</button=>
+                              </div>
+                          </div>
+                      </form>
+
+                      </div>
+                      
+                      <!-- Change Password Form -->
+                      <div class="col-md-6">
+                      <form action="{{ route('researcher.changePassword') }}" method="POST" class="changePassForm">
                         @csrf
-                        <div class="password-section">
+                          <div class="password-section">
                             <h2 class="text-center" style="color: white;">Change Password</h2>
-                            <div class="info mt-2">
+                            <div class="info mt-4">
                                 <label for="current-password" class="form-label" style="color: white;" style="border:1px, solid #52489f">Current Password</label>
                                 <input type="password" id="current-password" name="current_password" class="form-control" required style="border:1px, solid #52489f">
                             </div>
-                            <div class="info-2 mt-3">
+                            <div class="info-2 mt-4">
                                 <label for="new-password" class="form-label" style="color: white;">New Password</label>
                                 <input type="password" id="new-password" name="new_password" class="form-control" required style="border:1px, solid #52489f">
                             </div>
-                            <div class="info-3 mt-3">
+                            <div class="info-3 mt-4">
                                 <label for="new-password-confirm" class="form-label" style="color: white;">Confirm New Password</label>
                                 <input type="password" id="new-password-confirm" name="new_password_confirmation" class="form-control" required style="border:1px, solid #52489f">
                             </div>
-                            <div class="show-pass mt-3">
+                            <div class="show-pass mt-4">
                                 <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()" >
                                 <label for="show-password" style="color: white;">Show Password</label>
                             </div>
-                            <div class="save-button mt-3 d-flex justify-content-center">
+                            <div class="save-button mt-4 d-flex justify-content-center">
                                 <button type="submit" class="btn" style="background-color :#922220; color: white;">Change Password</button>
                             </div>
-                        </div>
-                    </form>
+                          </div>
+                      </form>
+                      </div>
 
+                      <!-- Update Profile Information Form -->
+                     
+                    </div>
                     <hr class="w-100 border-3">
-
-                    <!-- Update Profile Information Form -->
-                    <form action="{{ route('researcher.settings.update') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <!-- Basic Information -->
-                        <h2 class="text-center" style="color: white;">Basic Information</h2>
-                        <div class="info mt-2">
-                            <label for="first-name" class="form-label" style="color: white;">Edit First Name</label>
-                            <input type="text" id="first-name" name="first_name" class="form-control" value="{{ old('first_name', explode(' ', $researcher->name)[0] ?? '') }}" style="border:1px, solid #52489f">
-                        </div>
-                        <div class="info-2 mt-3">
-                            <label for="last-name" class="form-label" style="color: white;">Edit Last Name</label>
-                            <input type="text" id="last-name" name="last_name" class="form-control" value="{{ old('last_name', explode(' ', $researcher->name)[1] ?? '') }}" style="border:1px, solid #52489f">
-                        </div>
-                        <div class="info-4 mt-3">
-                            <label for="email" class="form-label" style="color: white;">Edit Email Address</label>
-                            <input type="email" id="email" name="email" class="form-control" value="{{ old('email', $researcher->email) }}" style="border:1px, solid #52489f">
-                        </div>
-
-                        <!-- Skills -->
-                        <div class="skill-info mt-3">
-                            <span class="form-label" style="color: white;">Edit Specializations</span>
-                        </div>
-                        <div class="skills">
-                            <div id="skills-container">
-                                @foreach($skills as $skill)
-                                    <div class="input-group mb-2">
-                                        <input type="text" name="skills[]" class="form-control" value="{{ $skill }}" style="border:1px, solid #52489f">
-                                        <button type="button" class="btn btn-danger remove-skill">Remove</button>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="button-container mt-4 d-flex justify-content-center">
-                                <button type="button" class="btn w-25" id="add-skill" style="background-color : #922220;color: white;">Add Specializations</button=>
-                            </div>
-                        </div>
-
-                        <!-- Save Button -->
-                        <div class="save-button mt-4 d-flex justify-content-center">
-                            <button type="submit" class="btn  w-25" style="background-color: #922220;color: white;">Save</button>
-                        </div>
-                    </form>
+                    <!-- Save Button -->
+                    <div class="save-button mt-4 d-flex justify-content-center">
+                      <button type="submit" class="btn  w-25" style="background-color: #922220;color: white;">Save</button>
+                    </div>
                 </div>
             </div>
         </div>

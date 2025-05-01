@@ -7,14 +7,15 @@
     <title>View All Research</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('stylesheet/researchStaff/viewResearchers.css') }}">
     <style>
-         .modal-content {
+        .modal-content {
         background-color: #818589; /* Light purple background */
         border-radius: 8px;
         padding: 20px; 
     }
-
+ 
         .card {
             border: 4px solid #ddd;
             border-radius: 10px;
@@ -52,10 +53,10 @@
             background-color: #f8f9fa; /* Light gray for better readability */
         border: 1px solid #ddd;
         border-radius: 8px;
-     }
-     
+    }
 
-     .btn-primary {
+
+    .btn-primary {
         background-color: #52489f;
         border: none;
     }
@@ -102,6 +103,18 @@
         border-color: #ddd;
         pointer-events: none;
     }
+
+    .page-item.active .page-link {
+			background-color: maroon !important;
+			border-color: maroon !important;
+			color: white !important;
+			height: 4.6vh;
+			border-radius: 5px;
+    }
+
+		.page-link {
+			margin: 0 4px;
+		}
         
     </style>
 </head>
@@ -161,14 +174,13 @@
                     </button>
 
                     <!-- Profile Picture and Details -->
-                    <a href="{{ route('researcher.repository', $researcher->id) }}?page={{ request('page') }}" style="text-decoration: none;">
-                    <img src="{{ $researcher->profile_picture ? Storage::url($researcher->profile_picture) : asset('img/default-profile.png') }}" 
-                        alt="{{ $researcher->name }}" 
+                    <a href="{{ route('researcher.repository', $researcher->id) }}" style="text-decoration: none;">
+                      <img src="{{ $researcher->profile_picture ? Storage::url($researcher->profile_picture) : asset('img/default-profile.png') }}" 
                         class="rounded-circle mb-3" 
+                        alt="{{ $researcher->name }}" 
                         style="width: 100px; height: 100px; object-fit: cover; border: 1.5px solid black;">
-                    <h5 class="card-title" style="color: black;">{{ $researcher->name }}</h5>
-                </a>
-
+                      <h5 class="card-title" style="color: black;">{{ $researcher->name }}</h5>
+                    </a>
                     <p class="card-text">{{ $researcher->position }}</p>
                     <p class="card-text">{{ $researcher->email }}</p>
 
@@ -176,14 +188,14 @@
                     <div class="mt-3">
                         <!-- Edit Button -->
                         <button type="button" class="btn btn-sm edit-researcher-btn"
-        style="background-color: #7393B3; color: white; transition: background-color 0.3s ease;"
-        onmouseover="this.style.backgroundColor='#5f7f9d';" onmouseout="this.style.backgroundColor='#7393B3';"
-        data-toggle="modal" data-target="#editModal"
-        data-id="{{ $researcher->id }}" data-name="{{ $researcher->name }}" 
-        data-email="{{ $researcher->email }}" data-position="{{ $researcher->position }}"
-        data-programs="{{ json_encode($researcher->programs->pluck('id')->toArray()) }}">
-    Edit
-</button>
+													style="background-color: #7393B3; color: white; transition: background-color 0.3s ease;"
+													onmouseover="this.style.backgroundColor='#5f7f9d';" onmouseout="this.style.backgroundColor='#7393B3';"
+													data-toggle="modal" data-target="#editModal"
+													data-id="{{ $researcher->id }}" data-name="{{ $researcher->name }}" 
+													data-email="{{ $researcher->email }}" data-position="{{ $researcher->position }}"
+													data-programs="{{ json_encode($researcher->programs->pluck('id')->toArray()) }}">
+														Edit
+												</button>
                         <!-- Delete Button -->
                         <form action="{{ route('researchers.destroy', $researcher->id) }}" method="POST" style="display: inline-block;">
                             @csrf
@@ -272,21 +284,23 @@
     </div>
 
     <div class="modal fade" id="generateReportModal" tabindex="-1" role="dialog" aria-labelledby="generateReportModalLabel" aria-hidden="true">
-    <div class="modal-dialog " role="document">
+    <div class="modal-dialog text-white" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="generateReportModalLabel"> <span id="researcherName"></span></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="height: auto; width: 2vw; border-radius: 5px;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form id="generateReportForm" action="" method="GET">
+
                     <!-- Description Input -->
                     <div class="form-group">
                         <label for="description">Report Description</label>
                         <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                     </div>
+
                     <!-- Status and Role Selection -->
                     <div class="form-group">
                         <label for="status">Status</label>
@@ -296,6 +310,7 @@
                             <option value="Finished">Finished</option>
                         </select>
                     </div>
+                    
                     <!-- Role Selection -->
                     <div class="form-group">
                         <label for="role">Role</label>
@@ -305,11 +320,12 @@
                             <option value="member">Member</option>
                         </select>
                     </div>
+
                     <!-- Hidden input for the researcher ID -->
                     <input type="hidden" id="researcher_id" name="researcher_id">
                     <div class="mt-3">
-                    <button type="submit" class="btn" style="background-color: #7393B3; color: white; transition: background-color 0.3s ease;"
-                    onmouseover="this.style.backgroundColor='#5f7f9d';" onmouseout="this.style.backgroundColor='#7393B3';">Preview Report</button>
+                    <button type="submit" class="btn" style="background-color: #7393B3; color: white; transition: background-color 0.3s ease; width: 100%;"
+                    onmouseover="this.style.backgroundColor='#5f7f9d';" onmouseout="this.style.backgroundColor='#7393B3';">  <i class="bi bi-eye"></i> Preview Report</button>
 </div>
                 </form>
             </div>
@@ -317,7 +333,7 @@
     </div>
 </div>
 
-
+	
 
 
 
@@ -326,6 +342,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
   $('#generateReportModal').on('show.bs.modal', function (event) {
@@ -351,11 +368,15 @@
     const sidebar = document.getElementById('sidebar');
     const menuBtn = document.getElementById('menuBtn');
     const closeBtn = document.getElementById('closeBtn')
+
     // Show sidebar
+
     menuBtn.addEventListener('click', () => {
         sidebar.classList.add('active');
     })
+
     // Hide sidebar
+    
     closeBtn.addEventListener('click', () => {
         sidebar.classList.remove('active');
     });

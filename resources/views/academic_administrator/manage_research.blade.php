@@ -18,7 +18,7 @@
         .card {
             margin-bottom: 20px;
         }
-
+ 
         .chart-container {
             width: 100%;
             max-width: 600px;
@@ -32,6 +32,28 @@
             border-radius: 10px;
             margin-bottom: 20px;
         }
+
+        .custom-preview-btn {
+					background-color: #7393B3;
+					color: white;
+					border: none;
+					transition: background-color 0.3s ease;
+        }
+
+				.custom-preview-btn:hover {
+						background-color: #5f7da3;
+				}
+				.tab-header {
+					padding: 6px 12px;
+					border-radius: 8px 8px 0 0;
+					background-color: #e9ecef;
+					color: #555;
+				}
+				.active-tab {
+					background-color: #922220;
+					color: white;
+					font-weight: bold;
+				}
     </style>
 </head>
 
@@ -90,7 +112,7 @@
                     </div>
                     <!-- Row for Analytics and Calendar -->
                     <div class="row mt-4 pb-3">
-                        <!-- Analytics Section -->
+                      <!-- Analytics Section -->
                         <div class="col-md-12">
                             <div class="analytics-div p-4" style="background-color: white; border-radius: 10px; margin-bottom: 20px;">
                                 <div class="row ">
@@ -112,123 +134,97 @@
                         </div>
                     
                         <!-- Undergraduate Research Projects -->
-                        <div class="container mt-3 p-4" style="background-color: white; border-radius: 10px; max-width: 98%; padding: 10px; margin: auto;">
-                            <h3 class="mb-4" style="font-weight: bold; font-size: 20px; color: black;">Undergraduate Research Projects</h3>
-                            
-                            <div class="row p-2" id="researchContainer">
-                                @forelse($undergraduateResearches as $key => $research)
-                                    <div class="col-12 mb-3 research-item" style="{{ $key >= 3 ? 'display: none;' : '' }}"> 
-                                        <div class="card shadow-sm h-100 w-100 border-1 border-black">
-                                            <div class="card-body d-flex flex-column">
-                                                <h4 class="card-title" style="font-size: 20px; font-weight: bold; margin-bottom: 10px; color: black;">
-                                                    {{ $research->title }}
-                                                </h4>
-                                                <hr>
-                                                <div class="content-contiainer d-flex justify-content-between align-items-center gap-5">
-                                                    <div class="leader-section flex-grow-1" style="color: black; max-width: 250px;">
-                                                        <strong>Leader:</strong>
-                                                        <span class="leader-name" style="font-weight: bold; color: gray;">
-                                                            {{ $research->leader->name ?? 'N/A' }}
-                                                        </span>
-                                                    </div>
-                
-                                                    <div class="text-center flex-grow-1">
-                                                        <strong>Status:</strong>
-                                                        <span class="badge" style="font-size: 12px; background-color: {{ $research->status === 'On-Going' ? '#922220' : '#118B50' }};">
-                                                            {{ $research->status }}
-                                                        </span>
-                                                    </div>
-                                                    <div class="text-center flex-grow-1">
-                                                    <strong>Program:</strong> @if($research->programs->isNotEmpty())
-                                                                @foreach($research->programs as $program)
-                                                                    {{ $program->name }}@if(!$loop->last), @endif
-                                                                @endforeach
-                                                            @else
-                                                                N/A
-                                                            @endif
-                                                    </div>
-                                                
-                                                    <div class="text-center flex-grow-1" style="color: black;">
-                                                        <div>
-                                                            <strong>Deadline:</strong> {{ \Carbon\Carbon::parse($research->deadline)->format('d-m-Y') }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                @empty
-                                    <p class="text-center col-12" style="font-size: 14px; color: #888;">No undergraduate research projects available.</p>
-                                @endforelse
+                        <div class="container mt-3 p-4 " style="background-color: white; border-radius: 10px; max-width: 98%; padding: 10px; margin: auto;">
+                            <div class="col-12 col-md-10 col-lg-12 mt-3 rounded p-2 rrl" style="width: 98.5%; height: auto;">
+                                <!-- Toggle Buttons -->
+                                <div class="d-flex gap-4 align-items-center mt-3 mb-2">
+                                <h5 id="tabLed" class="tab-header active-tab" style="cursor: pointer; margin-bottom: 0;">Undergraduate Research Projects</h5>
+                                <h5 id="tabParticipated" class="tab-header" style="cursor: pointer; margin-bottom: 0;">Graduate Research Projects</h5>
                             </div>
+                            
+                            <div id="researchLedSection" class="mt-3">
+                                <!-- Table for Led Researches -->
+                                <table id="ledResearchesTable" class="table table-bordered table-striped table-hover">
+                                    <thead style="background-color: #e9ecef;">
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Leader</th>
+                                            <th>Status</th>
+                                            <th>Program</th>
+                                            <th>Deadline</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($undergraduateResearches as $key => $research)
+                                            <tr>
+                                                <td><strong> {{ $research->title }}</strong></td>
+                                                <td>{{ $research->leader->name ?? 'N/A' }}</td>
+                                                <td><span style="font-size: 12px; background-color: {{ $research->status === 'On-Going' ? '#922220' : '#118B50' }};"> {{ $research->status }}</span></td>
+                                                <td>
+																									@if($research->programs->isNotEmpty())
+                                                    @foreach($research->programs as $program)
+                                                        {{ $program->name }}@if(!$loop->last), @endif
+                                                    @endforeach
+																									@else
+																											N/A
+																									@endif
+																								</td>
+                                                <td>{{ \Carbon\Carbon::parse($research->deadline)->format('d-m-Y') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                         
-                            <!-- Show More Button (Always Visible) -->
-                            <div class="text-center mt-3">
-                                <button id="toggleBtn" class="btn" style="background-color:#922220; color:white;">Show All</button>
+                                <!-- Button to toggle view -->
+                                <div class="text-center mt-3">
+                                    <button id="toggleLedBtn" class="btn" style="background-color:#922220; color:white;">Show All</button>
+                                </div>
                             </div>
                         </div>
                         
                         <!-- Graduate Research Projects -->
-                        <div class="container mt-3 p-4" style="background-color: white; border-radius: 10px; max-width: 98%; padding: 10px; margin: auto;">
-                            <h3 class="mb-4" style="font-weight: bold; font-size: 20px; color: black;">Graduate Research Projects</h3>
-
-                            <div class="row p-2" id="researchContainer">
-
-                                @forelse($graduateResearches as $key => $research)
-                                    <div class="col-12 mb-3 research-grad" style="{{ $key >= 3 ? 'display: none;' : '' }}"> <!-- Added col-md-4 for responsive layout and mb-3 for spacing between cards -->
-                                        <div class="card shadow-sm h-100 border-1 border-black"> <!-- Added h-100 to make cards the same height -->
-                                            <div class="card-body d-flex flex-column"> <!-- Added d-flex and flex-column for vertical alignment -->
-                                                <h4 class="card-title" style="font-size: 20px; font-weight: bold; margin-bottom: 10px; color: black;"> <!-- Reduced font-size -->
-                                                    {{ $research->title }}
-                                                </h4>
-                                                <hr>
-                                                <div class=" d-flex justify-content-between align-items-center">
-
-                                                    <div class="leader-section flex-grow-1 " style="color: black; max-width: 250px;"> <!-- Reduced margin-bottom to mb-2 -->
-                                                        <strong>Leader:</strong>
-                                                        <span class="leader-name" style="font-weight: bold; color: gray;">
-                                                            {{ $research->leader->name ?? 'N/A' }}
-                                                        </span>
-                                                    </div>
-                                                    
-                                                    <div class="text-center flex-grow-1">
-                                                        <strong>Status:</strong>
-                                                        <span class="badge" style="font-size: 12px; background-color: {{ $research->status === 'On-Going' ? '#922220' : '#118B50' }};">
-                                                            {{ $research->status }}
-                                                        </span>
-                                                    </div>
-
-                                                    <div class="text-center flex-grow-1">
-                                                        <strong>Program:</strong> @if($research->programs->isNotEmpty())
-                                                            @foreach($research->programs as $program)
-                                                                {{ $program->name }}@if(!$loop->last), @endif
-                                                            @endforeach
-                                                        @else
-                                                            N/A
-                                                        @endif
-                                                    </div>
-                                                    
-                                                    <div class="text-center flex-grow-1" style="color: black;">
-                                                        <div>
-                                                            <strong>Deadline:</strong> {{ \Carbon\Carbon::parse($research->deadline)->format('d-m-Y') }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @empty
-                                    <p class="text-center col-12" style="font-size: 14px; color: #888;">No graduate research projects available.</p>
-                                @endforelse
-                            </div>
-                            <!-- Show More Button (Always Visible) -->
-                            <div class="text-center mt-3">
-                                <button id="showBtn" class="btn" style="background-color:#922220; color:white;">Show All</button>
-                            </div>
-                        </div>
-
-
+												<div id="researchParticipatedSection" class="mt-3" style="display: none;">
+													<!-- Table for Participated Researches -->
+													<table id="participatedResearchesTable" class="table table-bordered table-striped table-hover">
+															<thead style="background-color: #e9ecef;">
+																	<tr>
+																		<th>Title</th>
+																		<th>Leader</th>
+																		<th>Status</th>
+																		<th>Program</th>
+																		<th>Deadline</th>
+																	</tr>
+															</thead>
+															<tbody>
+																	@foreach ($graduateResearches as $key => $research)
+																			<tr>
+																					<td><strong>{{ $research->title }}</strong></td>
+																					<td>{{ $research->leader->name ?? 'N/A' }}</td>
+																					<td>
+																							<span style="font-size: 12px; background-color: {{ $research->status === 'On-Going' ? '#922220' : '#118B50' }};">
+																								{{ $research->status }}
+																							</span>
+																					</td>
+																					<td>
+																						@if($research->programs->isNotEmpty())
+																						@foreach($research->programs as $program)
+																								{{ $program->name }}@if(!$loop->last), @endif
+																						@endforeach
+																						@else
+																								N/A
+																						@endif
+																					</td>
+																					<td>{{ \Carbon\Carbon::parse($research->deadline)->format('d-m-Y') }}</td>
+																			</tr>
+																	@endforeach
+															</tbody>
+													</table>
+									
+													<!-- Button to toggle view -->
+													<div class="text-center mt-3">
+															<button id="toggleParticipatedBtn" class="btn" style="background-color:#922220; color:white;">Show All</button>
+													</div>
+											</div>
                     </div>
                 </div>
             </div>
@@ -387,6 +383,65 @@ $(document).ready(function() {
     });
 });
 </script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Setup toggle for Led/Participated using header tabs
+        const tabLed = document.getElementById("tabLed");
+        const tabParticipated = document.getElementById("tabParticipated");
+        const researchLedSection = document.getElementById("researchLedSection");
+        const researchParticipatedSection = document.getElementById("researchParticipatedSection");
+    
+        function switchToLed() {
+            researchLedSection.style.display = "block";
+            researchParticipatedSection.style.display = "none";
+            tabLed.classList.add("active-tab");
+            tabParticipated.classList.remove("active-tab");
+        }
+    
+        function switchToParticipated() {
+            researchLedSection.style.display = "none";
+            researchParticipatedSection.style.display = "block";
+            tabLed.classList.remove("active-tab");
+            tabParticipated.classList.add("active-tab");
+        }
+    
+        tabLed.addEventListener("click", switchToLed);
+        tabParticipated.addEventListener("click", switchToParticipated);
+    
+        // Set initial view
+        switchToLed(); // or switchToParticipated() if you want to default to that
+    
+        // Function to toggle the visibility of "Show All" and "Show Less" rows in each table
+        function setupToggleTable(tableId, buttonId) {
+            const toggleBtn = document.getElementById(buttonId);
+            const tableRows = document.querySelectorAll(`#${tableId} tbody tr`);
+            const itemsToShow = 10; // Show only the first 3 items initially
+            let expanded = false;
+    
+            function updateVisibility() {
+                tableRows.forEach((row, index) => {
+                    row.style.display = (expanded || index < itemsToShow) ? "table-row" : "none";
+                });
+    
+                toggleBtn.textContent = expanded ? "Show Less" : "Show All";
+            }
+    
+            toggleBtn.addEventListener("click", function () {
+                expanded = !expanded;
+                updateVisibility();
+            });
+    
+            updateVisibility();
+        }
+    
+        // Setup "Show All / Show Less" for both tables
+        setupToggleTable("ledResearchesTable", "toggleLedBtn");
+        setupToggleTable("participatedResearchesTable", "toggleParticipatedBtn");
+    });
+    </script>
+    
 
 </body>
 

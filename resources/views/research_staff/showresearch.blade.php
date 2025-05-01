@@ -63,167 +63,161 @@
                     <h2 class="mb-0">{{ $research->title }}</h2>
                 </div>
                 <button type="button" class="btn btn-primary mt-2 mb-2 float-end" style="background-color:#922220; border: 1px solid #922220;" data-bs-toggle="modal" data-bs-target="#updateTitleModal">
-    Update Title
-</button>
+                  Update Title
+                </button>
 
-<div class="modal fade" id="updateTitleModal" tabindex="-1" aria-labelledby="updateTitleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateTitleModalLabel"style="color: black;">Update Research Title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('research.updateTitle', $research->id) }}" method="POST">
-                    @csrf
-                    @method('PATCH')
-                    <div class="mb-3">
-                        <label for="title" class="form-label">New Title:</label>
-                        <input type="text" name="title" id="title" class="form-control" value="{{ $research->title }}" required>
+                <div class="modal fade" id="updateTitleModal" tabindex="-1" aria-labelledby="updateTitleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateTitleModalLabel"style="color: black;">Update Research Title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('research.updateTitle', $research->id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <div class="mb-3">
+                                        <label for="title" class="form-label">New Title:</label>
+                                        <input type="text" name="title" id="title" class="form-control" value="{{ $research->title }}" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-success">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Save Changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+                </div>
 
                 <hr class="w-100  border-3">
 
-                <div class="card-body mt-3 text-black p-3 rounded-2" style="background-color: #F2F9FF;">
-                <div class="card-body mt-3 text-black p-3 rounded-2" style="background-color: #F2F9FF;">
-    <div class="row">
-        <!-- Research Details Section -->
-        <div class="col-md-6 mb-3">
-            <p style="color: 	#3b3b3b;"><strong style="color: black;">Leader:</strong> {{ $research->leader->name }}</p>
-            <p style="color: 	#3b3b3b;"><strong style="color: black;">Status:</strong> {{ $research->status }}</p>
-            <p style="color: 	#3b3b3b;"><strong style="color: black;">Description:</strong> {{ $research->description }}</p>
-            <p style="color: 	#3b3b3b;"><strong style="color: black;">Program:</strong> @if($research->programs->isNotEmpty())
-    <ul>
-        @foreach($research->programs as $program)
-            <li>{{ $program->name }}</li>
-        @endforeach
-    </ul>
-@else
-    <p>No programs assigned yet.</p>
-@endif</p> <button type="button" class="btn btn-primary" style="background-color:#922220; border: 1px solid #922220;" data-bs-toggle="modal" data-bs-target="#updateProgramsModal">
-    Update Programs
-</button>
-            <p  class="mt-3" style="color: 	#3b3b3b;">
-    <strong style="color: black;">Members:</strong>
-    @if($research->members->isNotEmpty())
-        @foreach($research->members as $index => $member)
-            {{ $member->name }}@if(!$loop->last), @endif
-        @endforeach
-    @else
-        No members assigned.
-    @endif
-</p> 
-        </div>
 
-        <!-- Program Modal -->
-         
-<div class="modal fade" id="updateProgramsModal" tabindex="-1" aria-labelledby="updateProgramsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateProgramsModalLabel">Update Research Programs</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="updateProgramsForm" action="{{ route('research.updatePrograms', $research->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-
-                    @foreach($allPrograms as $program)
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="programs[]" value="{{ $program->id }}"
-                                {{ in_array($program->id, $research->programs->pluck('id')->toArray()) ? 'checked' : '' }}>
-                            <label class="form-check-label">{{ $program->name }}</label>
-                        </div>
-                    @endforeach
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Save Changes</button>
+              <div class="card-body mt-3 text-black p-3 rounded-2" style="background-color: #FAF9F6;">
+                    <div class="row">
+                      <!-- Research Details Section -->
+                      <div class="col-md-6 mb-3">
+                          <p style="color: 	#3b3b3b;"><strong style="color: black;">Leader:</strong> {{ $research->leader->name }}</p>
+                          <p style="color: 	#3b3b3b;"><strong style="color: black;">Status:</strong> {{ $research->status }}</p>
+                          <p style="color: 	#3b3b3b;"><strong style="color: black;">Description:</strong> {{ $research->description }}</p>
+                          <p style="color: 	#3b3b3b;"><strong style="color: black;">Program:</strong> @if($research->programs->isNotEmpty())
+                        <ul>
+                            @foreach($research->programs as $program)
+                                <li>{{ $program->name }}</li>
+                            @endforeach
+                        </ul>
+                        @else
+                            <p>No programs assigned yet.</p>
+                        @endif</p> <button type="button" class="btn btn-primary" style="background-color:#922220; border: 1px solid #922220;" data-bs-toggle="modal" data-bs-target="#updateProgramsModal">
+                            Update Programs
+                        </button>
+                       
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
-        <!-- Research Leader and Funding Section -->
-        <div class="col-md-6 mb-3">
-        <p style="color: 	#3b3b3b;"><strong style="color: black;">Budget:</strong> ₱{{ number_format($research->budget, 2) }}</p>
-            <p style="color: 	#3b3b3b;"><strong style="color: black;">Funding Type:</strong> {{ $research->fundingType->type }}</p>
-            <p style="color:	#3b3b3b;"><strong style="color: black;">Approved Date:</strong>
-                @if ($research->approved_date)
-                    {{ \Carbon\Carbon::parse($research->approved_date)->format('F d, Y') }}
-                @else
-                    Not yet approved.
-                @endif
-            </p>
-        </div>
-    </div>
+                    <!-- Program Modal -->
+                    <div class="modal fade" id="updateProgramsModal" tabindex="-1" aria-labelledby="updateProgramsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateProgramsModalLabel">Update Research Programs</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="updateProgramsForm" action="{{ route('research.updatePrograms', $research->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
 
-    <hr class="w-100 border-1">
+                                        @foreach($allPrograms as $program)
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="programs[]" value="{{ $program->id }}"
+                                                    {{ in_array($program->id, $research->programs->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                                <label class="form-check-label">{{ $program->name }}</label>
+                                            </div>
+                                        @endforeach
 
-   
-    <div class="row">
-        <!-- Deadline and Remaining Time Section -->
-        <div class="col-md-6 mb-3">
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-success">Save Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Research Leader and Funding Section -->
+                    <div class="col-md-6 mb-3">
+                    <p style="color: 	#3b3b3b;"><strong style="color: black;">Budget:</strong> ₱{{ number_format($research->budget, 2) }}</p>
+                        <p style="color: 	#3b3b3b;"><strong style="color: black;">Funding Type:</strong> {{ $research->fundingType->type }}</p>
+                        <p style="color:	#3b3b3b;"><strong style="color: black;">Approved Date:</strong>
+                            @if ($research->approved_date)
+                                {{ \Carbon\Carbon::parse($research->approved_date)->format('F d, Y') }}
+                            @else
+                                Not yet approved.
+                            @endif
+                        </p>
+
+                        <p  class="mt-3" style="color: 	#3b3b3b;">
+                          <strong style="color: black;">Members:</strong>
+                          @if($research->members->isNotEmpty())
+                              @foreach($research->members as $index => $member)
+                                  {{ $member->name }}@if(!$loop->last), @endif
+                              @endforeach
+                          @else
+                              No members assigned.
+                          @endif
+                    </p> 
+                    </div>
+                </div>
+
+  <hr class="w-100 border-1">
+
+
+  <div class="row">
+      <!-- Deadline and Remaining Time Section -->
+      <div class="col-md-6">
             <p style="color: 	#3b3b3b;"><strong style="color: black;">Deadline:</strong> {{ \Carbon\Carbon::parse($research->deadline)->format('F d, Y') }}</p>
             @if($research->status !== 'Finished')
-            @if($remainingDays > 0)
-                <p style="color:rgb(221, 53, 53);"><strong style="color: black;">Delayed:</strong> Delayed by {{ $remainingDays }} days</p>
-            @elseif($remainingDays == 0)
-                <p style="color: #FFD372;"><strong style="color: black;">Remaining Days:</strong> Today is the deadline!</p>
-            @elseif($remainingDays < 0)
-                <p><strong style="color: black;">Remaining Days:</strong> {{ abs($remainingDays) }} days</p>
+              <div class="status-container" style="margin-top: 20px;">
+                @if($remainingDays > 0)
+                  <p style="color:rgb(221, 53, 53);"><strong style="color: black; ">Delayed:</strong> Delayed by {{ $remainingDays }} days</p>
+              @elseif($remainingDays == 0)
+                  <p style="color: #FFD372;"><strong style="color: black;">Remaining Days:</strong> Today is the deadline!</p>
+              @elseif($remainingDays < 0)
+                  <p><strong style="color: black;">Remaining Days:</strong> {{ abs($remainingDays) }} days</p>
+              @endif
+              </div>
             @endif
-        @endif
         <button type="button" class="btn btn-primary" style="background-color:#922220; border: 1px solid #922220;" data-bs-toggle="modal" data-bs-target="#updateDeadlineModal">
-    Update Deadline
-</button>
-<form action="{{ route('research.updateDuration', $research->id) }}" method="POST">
-    @csrf
-    <div class="form-group mt-2">
-        <label for="project_duration">Update Project Duration</label>
-        <input type="text" name="project_duration" id="project_duration" class="form-control" value="{{ $research->project_duration }}" required>
-    </div>
-    <button type="submit" class="btn btn-primary mt-2" style="background-color:#922220; border: 1px solid #922220;">Update Duration</button>
-</form>
+            Update Deadline
+        </button>
 
-<div class="modal fade" id="updateDeadlineModal" tabindex="-1" aria-labelledby="updateDeadlineModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateDeadlineModalLabel">Update Research Deadline</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('research.updateDeadline', $research->id) }}" method="POST">
-                    @csrf
-                    @method('PATCH')
-                    <div class="mb-3">
-                        <label for="deadline" class="form-label">New Deadline:</label>
-                        <input type="date" name="deadline" id="deadline" class="form-control" value="{{ $research->deadline }}" required>
+        <div class="modal fade" id="updateDeadlineModal" tabindex="-1" aria-labelledby="updateDeadlineModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateDeadlineModalLabel">Update Research Deadline</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Save Changes</button>
+                    <div class="modal-body">
+                        <form action="{{ route('research.updateDeadline', $research->id) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <div class="mb-3">
+                                <label for="deadline" class="form-label">New Deadline:</label>
+                                <input type="date" name="deadline" id="deadline" class="form-control" value="{{ $research->deadline }}" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
-        </div>
+      </div>
 
         <!-- Completion Date Section -->
         <div class="col-md-6 mb-3">
@@ -234,6 +228,14 @@
                     Not completed yet.
                 @endif
             </p>
+            <form action="{{ route('research.updateDuration', $research->id) }}" method="POST" style=" margin-top: -10px;">
+              @csrf
+              <div class="form-group mb-2">
+                  <label for="project_duration" class="mb-3">Update Project Duration</label>
+                  <input type="text" name="project_duration" id="project_duration" class="form-control" style="width: 40%;" value="{{ $research->project_duration }}" required>
+              </div>
+              <button type="submit" class="btn btn-primary mt-2" style="background-color:#922220; border: 1px solid #922220;">Update Duration</button>
+            </form>
         </div>
     </div>
 
@@ -300,9 +302,9 @@
                     
                     <hr class="w-100  border-3">
                     <!-- Forms Section -->
-                    <div class="row">
+                    <div class="row" style="background-color: #FAF9F6; margin: 0 2px; border-radius: 5px; padding: 3px;">
                         <div class="col-md-6 mb-4">
-                            <form action="{{ route('research.update_status', ['id' => $research->id]) }}" method="POST">
+                            <form action="{{ route('research.update_status', ['id' => $research->id]) }}" method="POST" style="margin-top: 5px;">
                                 @csrf
                                 @method('PATCH')
                                 <label for="status" class="form-label" style="color: black;">Update Status:</label>
@@ -317,7 +319,7 @@
                             </form>
                         </div>
                         <div class="col-md-6 mb-4">
-                            <form action="{{ route('research.update_special_order', ['id' => $research->id]) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('research.update_special_order', ['id' => $research->id]) }}" method="POST" enctype="multipart/form-data" style="margin-top: 5px;">
                                 @csrf
                                 @method('PATCH')
                                 <label for="special_order" class="form-label" style="color: black;">Update Special Order File:</label>
@@ -391,9 +393,7 @@
                 </div>
                 <hr class="w-100 border-3">
                 <div class="card-footer d-flex justify-content-center align-items-center mt-4">
-                <a href="{{ route('research.index', ['page' => request('page', 1)]) }}" class="btn" style="background-color: #922220; color: white">
-    Back to All Research
-</a>
+                    <a href="{{ route('research.index') }}" class="btn" style="background-color: #922220; color: white">Back to All Research</a>
                 </div>
             </div>
         </div>
