@@ -218,7 +218,7 @@
 																								N/A
 																						@endif
 																					</td>
-																					<td>{{ \Carbon\Carbon::parse($research->deadline)->format('d-m-Y') }}</td>
+																					<td>{{ \Carbon\Carbon::parse($research->deadline)->format('F d, Y') }}</td>
 																			</tr>
 																	@endforeach
 															</tbody>
