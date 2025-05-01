@@ -159,7 +159,11 @@
                                             <tr>
                                                 <td><strong> {{ $research->title }}</strong></td>
                                                 <td>{{ $research->leader->name ?? 'N/A' }}</td>
-                                                <td><span style="font-size: 12px; background-color: {{ $research->status === 'On-Going' ? '#922220' : '#118B50' }};"> {{ $research->status }}</span></td>
+                                                <td>
+  <span class="badge text-white" style="background-color: {{ $research->status === 'On-Going' ? '#922220' : '#118B50' }}">
+    {{ $research->status }}
+  </span>
+</td>
                                                 <td>
 																									@if($research->programs->isNotEmpty())
                                                     @foreach($research->programs as $program)
@@ -201,10 +205,10 @@
 																					<td><strong>{{ $research->title }}</strong></td>
 																					<td>{{ $research->leader->name ?? 'N/A' }}</td>
 																					<td>
-																							<span style="font-size: 12px; background-color: {{ $research->status === 'On-Going' ? '#922220' : '#118B50' }};">
-																								{{ $research->status }}
-																							</span>
-																					</td>
+  <span class="badge text-white" style="background-color: {{ $research->status === 'On-Going' ? '#922220' : '#118B50' }}">
+    {{ $research->status }}
+  </span>
+</td>
 																					<td>
 																						@if($research->programs->isNotEmpty())
 																						@foreach($research->programs as $program)
