@@ -234,14 +234,17 @@
                     <div class="mt-3">
                         <!-- Edit Button -->
                         <button type="button" class="btn btn-sm edit-researcher-btn"
-													style="background-color: #7393B3; color: white; transition: background-color 0.3s ease;"
-													onmouseover="this.style.backgroundColor='#5f7f9d';" onmouseout="this.style.backgroundColor='#7393B3';"
-													data-toggle="modal" data-target="#editModal"
-													data-id="{{ $researcher->id }}" data-name="{{ $researcher->name }}" 
-													data-email="{{ $researcher->email }}" data-position="{{ $researcher->position }}"
-													data-programs="{{ json_encode($researcher->programs->pluck('id')->toArray()) }}">
-														Edit
-												</button>
+    style="background-color: #7393B3; color: white;"
+    onmouseover="this.style.backgroundColor='#5f7f9d';"
+    onmouseout="this.style.backgroundColor='#7393B3';"
+    data-bs-toggle="modal" data-bs-target="#editModal"
+    data-id="{{ $researcher->id }}"
+    data-name="{{ $researcher->name }}"
+    data-email="{{ $researcher->email }}"
+    data-position="{{ $researcher->position }}"
+    data-programs='@json($researcher->programs->pluck("id"))'>
+    Edit
+</button>
                         <!-- Delete Button -->
                         <form action="{{ route('researchers.destroy', $researcher->id) }}" method="POST" style="display: inline-block;">
                             @csrf
@@ -266,9 +269,8 @@
                     {{ $researchers->onEachSide(1)->links('pagination::bootstrap-4') }}
                 </div>
 
-                <!-- new -->             
-                <!-- Edit Modal -->
-                                 <!-- Edit Modal -->
+              
+                     <!-- Edit Modal -->
                         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" >
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -281,23 +283,23 @@
                                
                                     <div class="modal-body">
                                         <div>
-                                            <label for="editFirstName"style="color: white;">First Name</label>
+                                            <label for="editFirstName"style=" btn-secondary;">First Name</label>
                                             <input type="text" name="first_name" id="editFirstName" class="form-control" required>
                                         </div>
                                         <div>
-                                            <label for="editLastName"style="color: white;">Last Name</label>
+                                            <label for="editLastName"style="btn-secondary">Last Name</label>
                                             <input type="text" name="last_name" id="editLastName" class="form-control" required>
                                         </div>
                                         <div>
-                                            <label for="editPosition"style="color: white;">Position</label>
+                                            <label for="editPosition"style="btn-secondary;">Position</label>
                                             <input type="text" name="position" id="editPosition" class="form-control" required>
                                         </div>
                                         <div>
-                                            <label for="editEmail"style="color: white;">Email</label>
+                                            <label for="editEmail"style="btn-secondary;">Email</label>
                                             <input type="email" name="email" id="editEmail" class="form-control" required>
                                         </div>
                                         <div>
-                                            <label for="editPassword"style="color: white;">Password</label>
+                                            <label for="editPassword"style="cbtn-secondary;">Password</label>
                                             <input type="password" name="password" id="editPassword" class="form-control">
                                             <small class="form-text text-muted">Leave blank to keep the current password.</small>
                                         </div>
@@ -312,7 +314,7 @@
                                             <div class="form-check">
                                                 <input type="checkbox" name="program_ids[]" id="{{ 'program_' . $program->id }}" value="{{ $program->id }}" 
                                                     class="form-check-input">
-                                                <label for="{{ 'program_' . $program->id }}" class="form-check-label" style="color: white;">{{ $program->name }}</label>
+                                                <label for="{{ 'program_' . $program->id }}" class="form-check-label" style="btn-secondary">{{ $program->name }}</label>
                                             </div>
                                         @endforeach
                                     </div>
@@ -324,7 +326,10 @@
                                 </form>
                             </div> <!-- End of modal-content -->
                         </div> <!-- End of modal-dialog -->
-                    </div> <!-- End of modal -->
+                    </div> 
+                    
+                    
+                    <!-- End of modal -->
             </div>
         </div>
     </div>
@@ -466,21 +471,17 @@
     const researcherName = $(this).data('name');
     const researcherEmail = $(this).data('email');
     const researcherPosition = $(this).data('position');
-    const researcherPrograms = $(this).data('programs');
+    const researcherPrograms = JSON.parse($(this).attr('data-programs'));
 
-    // Set form action URL dynamically
     $('#editForm').attr('action', `/researchers/${researcherId}`);
-
-    // Pre-fill the modal with existing data
-    $('#editFirstName').val(researcherName.split(' ')[0]); // Assuming first and last names are split by space
-    $('#editLastName').val(researcherName.split(' ')[1]);
+    $('#editFirstName').val(researcherName.split(' ')[0]);
+    $('#editLastName').val(researcherName.split(' ').slice(1).join(' '));
     $('#editEmail').val(researcherEmail);
     $('#editPosition').val(researcherPosition);
 
-    // Uncheck all programs, then check the ones associated with the researcher
     $('input[name="program_ids[]"]').prop('checked', false);
-    researcherPrograms.forEach(function (programId) {
-        $(`#program_${programId}`).prop('checked', true);
+    researcherPrograms.forEach(function (id) {
+        $(`#program_${id}`).prop('checked', true);
     });
 });
 </script>
