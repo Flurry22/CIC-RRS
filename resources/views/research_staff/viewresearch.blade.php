@@ -6,7 +6,8 @@
     <link rel="shortcut icon" href="{{ asset('img/cic-logo.png') }}" type="image/x-icon">
     <title>View All Research</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('stylesheet/researchStaff/viewResearch.css') }}">
 </head>
 @php
@@ -62,7 +63,7 @@
 
     </style>
 <body>
-   
+
 
     <div class="wrapper">
         <div class="header">
@@ -70,25 +71,70 @@
         </div>
         <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
+          
             <button class="close-btn" id="closeBtn">&times;</button>
             <img src="{{ asset('img/cic-logo.png') }}" alt="usep-logo">
             <h3>USeP-College of Information and Computing</h3>
             <h4>Research Repository System</h4>
-            <hr class="w-100 border-3">
+            
             <ul>
-                <li><a href="{{ route('research_staff.dashboard') }}">Dashboard</a></li>
-                <li><a href="{{ route('research.create', ['type' => 'program']) }}">Add New Research</a></li>
-                <li><a href="{{ route('research.index') }}">View All Research</a></li>
-                <li><a href="{{ route('researchers.create') }}">Add New Researcher</a></li>
-                <li><a href="{{ route('researchers.index') }}">View Researchers</a></li>
-                <li><a href="/research-files">Research Files</a></li>
-                <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+              <hr style="width: 100%; border: 1px solid white; margin-top: -4px">
+  
+              <li><a href="{{ route('research_staff.dashboard') }}">Dashboard</a></li>
+  
+              <hr style="width: 100%; border: 1px solid white; margin-top: 5px">
+  
+              {{-- Accordion --}}
+              <div class="accordion accordion-flush" id="accordionFlushExample">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  Research Management
+                </button>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <li><a href="{{ route('research.create', ['type' => 'program']) }}">Add New Research</a></li>
+                    <li><a href="{{ route('research.index') }}">View All Research</a></li>
+                  </div>
+                </div>
+  
+                <hr style="width: 100%; border: 1px solid white; margin-top: 5px">
+  
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  Researcher Management
+                </button>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <li><a href="{{ route('researchers.create') }}">Add New Researcher</a></li>
+                    <li><a href="{{ route('researchers.index') }}">View Researchers</a></li>
+                  </div>
+                </div>
+  
+                <hr style="width: 100%; border: 1px solid white; margin-top: 10px;">
+                
+                
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Monitoring Management
+                </button>
+                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <li><a href="/research-files">Research Files</a></li>
+                    <li><a href="#" id="show-calendar-btn">Show Deadlines Calendar</a></li>
+                  </div>
+                </div>
+              </div>
+              {{-- End of Accordion --}}
+  
+              <hr style="width: 100%; border: 1px solid white; margin-top: 10px;">
+              <li><a href="#" data-bs-toggle="modal" data-bs-target="#updateCredentialsModal">Update Credentials</a></li>
+  
+              <hr style="width: 100%; border: 1px solid white; margin-top: 5px;">
+              <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+              
             </ul>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
         </div>
-
+				
         <!-- Main Content -->
         <div class="main-content container-fluid">
             <div class="box p-2 rounded-2 text-white" style="background-color: #818589;">
@@ -213,23 +259,63 @@
         
     </div>
 
+    
+
+
+    {{-- Update Credentials --}}
+    <div class="modal fade" id="updateCredentialsModal" tabindex="-1" aria-labelledby="updateCredentialsModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="updateCredentialsModalLabel" style ="color: #52489f;">Update Research Staff Credentials</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="{{ route('staff.updateCredentials') }}">
+                @csrf
+                <div class="mb-3">
+                <label for="email" class="form-label" style ="color: #52489f;">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ old('email', auth()->guard('research_staff')->user()->email) }}" required>
+                </div>
+                <div class="mb-3">
+                <label for="password" class="form-label" style ="color: #52489f;">New Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="mb-3">
+                <label for="password_confirmation" class="form-label" style ="color: #52489f;">Confirm Password</label>
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Credentials</button>
+            </form>
+        </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.min.js" integrity="sha384-RuyvpeZCxMJCqVUGFI0Do1mQrods/hhxYlcVfGPOfQtPJh0JCw12tUAZ/Mv10S7D" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
     <script>
-        const sidebar = document.getElementById('sidebar');
-        const menuBtn = document.getElementById('menuBtn');
-        const closeBtn = document.getElementById('closeBtn');
-        // Show sidebar
-        menuBtn.addEventListener('click', () => {
-            sidebar.classList.add('active');
-        });
-        // Hide sidebar
-        closeBtn.addEventListener('click', () => {
-            sidebar.classList.remove('active');
-        });
+      document.addEventListener('DOMContentLoaded', function () {
+          const sidebar = document.getElementById('sidebar');
+          const menuBtn = document.getElementById('menuBtn');
+          const closeBtn = document.getElementById('closeBtn');
+
+          menuBtn.addEventListener('click', () => {
+              sidebar.classList.add('active');
+          });
+
+          closeBtn.addEventListener('click', () => {
+              sidebar.classList.remove('active');
+          });
+      });
     </script>
 </body>
 </html>

@@ -23,85 +23,107 @@
 
 /* Sidebar styles */
 .sidebar {
-    background-color: #2a2a2a;
-    grid-column: 1;
-    color: #7393B3;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 300px;
-    height: 100%;
-    overflow-y: auto;
-    transition: transform 0.3s ease-in-out;
-    transform: translateX(0); /* Default visible state */
-    z-index: 999;
+  background-color: #2a2a2a;
+  grid-column: 1;
+  color: #7393B3;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100%;
+  /* max-height: 667px; */
+  overflow-y: auto;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(0); /* Default visible state */
+  z-index: 999;
 }
 
 .sidebar img {
-    max-width: 120px;
-    margin-bottom: 10px;
-    margin-top: 2vh;
+  max-width: 120px;
+  margin-bottom: 10px;
+  margin-top: 2vh;
 }
 
 .sidebar h3,
 .sidebar h4 {
-    margin: 10px 0;
-    font-size: 1.09rem;
+  margin: 10px 0;
+  font-size: 1rem;
 }
 
 
 
 
 .sidebar ul {
-    list-style-type: none;
-    padding: 20px;
-    width: 100%;
-    text-align: left;
-    font-size: 1.2rem;
+  list-style-type: none;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  font-size: 1.1rem;
 }
 
 .sidebar ul li {
-    margin: 10px 0;
-    transition: transform 0.3s ease-in-out;
-    
+  margin-top: 5px;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .sidebar ul li a {
-    color: white;
-    text-decoration: none;
-    display: block;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  
 }
 
-.sidebar ul .log {
-    color: white;
-    text-decoration: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.sidebar ul .log:hover {
-    background-color: #B2BEB5;
-    color: black;
-}
 
 .sidebar ul li a:hover {
-    background-color: #B2BEB5;
-    color: black;
+  background-color: #B2BEB5;
+  color: black;
 }
 
 
-.sidebar ul li:hover {
-    transform: translateX(10px);
-    
+/* Updated sidebar */
+/* accordion css */
+
+.accordion-button {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background-color: #2a2a2a !important;
+  color: white !important;
+  text-align: left !important;
+  padding: 5px !important;
+  margin: 0 2px !important;
+  font-size: 1.1rem !important;
+  transition: background-color 0.3s ease-in-out !important;
+  height: 50px !important;
+}
+
+.accordion-button:hover{
+  background-color: #B2BEB5 !important;
+  color: black !important;
+}
+
+
+/* Remove the white line specifically */
+.accordion-header {
+  border-bottom: none !important;
+}
+
+.accordion-button:after {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+}
+
+/* accordion body  */
+.accordion-collapse {
+  background-color: none !important;
+  color: white !important;
 }
 
 

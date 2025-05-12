@@ -39,6 +39,7 @@
     transition: transform 0.3s ease-in-out;
     transform: translateX(0); /* Default visible state */
     z-index: 999;
+    
 }
 
 .sidebar img {
@@ -102,6 +103,7 @@
     transform: translateX(10px);
     
 }
+
 
 
 

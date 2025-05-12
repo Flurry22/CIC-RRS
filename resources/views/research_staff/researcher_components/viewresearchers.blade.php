@@ -6,16 +6,18 @@
     <link rel="shortcut icon" href="{{ asset('img/cic-logo.png') }}" type="image/x-icon">
     <title>View All Research</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('stylesheet/researchStaff/viewResearchers.css') }}">
     <style>
         .modal-content {
-        background-color: #818589; /* Light purple background */
+        background-color: white; /* Light purple background */
         border-radius: 8px;
         padding: 20px; 
     }
- 
+
         .card {
             border: 4px solid #ddd;
             border-radius: 10px;
@@ -133,15 +135,58 @@
             <img src="{{ asset('img/cic-logo.png') }}" alt="usep-logo">
             <h3>USeP-College of Information and Computing</h3>
             <h4>Research Repository System</h4>
-            <hr class="w-100 border-3">
+          
             <ul>
-                <li><a href="{{ route('research_staff.dashboard') }}">Dashboard</a></li>
-                <li><a href="{{ route('research.create', ['type' => 'program']) }}">Add New Research</a></li>
-                <li><a href="{{ route('research.index') }}">View All Research</a></li>
-                <li><a href="{{ route('researchers.create') }}">Add New Researcher</a></li>
-                <li><a href="{{ route('researchers.index') }}">View Researchers</a></li>
-                <li><a href="/research-files">Research Files</a></li>
-                <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+              <hr style="width: 100%; border: 1px solid white; margin-top: -4px">
+  
+              <li><a href="{{ route('research_staff.dashboard') }}">Dashboard</a></li>
+  
+              <hr style="width: 100%; border: 1px solid white; margin-top: 5px">
+  
+              {{-- Accordion --}}
+              <div class="accordion accordion-flush" id="accordionFlushExample">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  Research Management
+                </button>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <li><a href="{{ route('research.create', ['type' => 'program']) }}">Add New Research</a></li>
+                    <li><a href="{{ route('research.index') }}">View All Research</a></li>
+                  </div>
+                </div>
+  
+                <hr style="width: 100%; border: 1px solid white; margin-top: 5px">
+  
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  Researcher Management
+                </button>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <li><a href="{{ route('researchers.create') }}">Add New Researcher</a></li>
+                    <li><a href="{{ route('researchers.index') }}">View Researchers</a></li>
+                  </div>
+                </div>
+  
+                <hr style="width: 100%; border: 1px solid white; margin-top: 10px;">
+                
+                
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Monitoring Management
+                </button>
+                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <li><a href="/research-files">Research Files</a></li>
+                  </div>
+                </div>
+              </div>
+              {{-- End of Accordion --}}
+  
+              <hr style="width: 100%; border: 1px solid white; margin-top: 10px;">
+              <li><a href="#" data-bs-toggle="modal" data-bs-target="#updateCredentialsModal">Update Credentials</a></li>
+  
+              <hr style="width: 100%; border: 1px solid white; margin-top: 5px;">
+              <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+              
             </ul>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
@@ -174,13 +219,14 @@
                     </button>
 
                     <!-- Profile Picture and Details -->
-                    <a href="{{ route('researcher.repository', $researcher->id) }}" style="text-decoration: none;">
-                      <img src="{{ $researcher->profile_picture ? Storage::url($researcher->profile_picture) : asset('img/default-profile.png') }}" 
-                        class="rounded-circle mb-3" 
-                        alt="{{ $researcher->name }}" 
-                        style="width: 100px; height: 100px; object-fit: cover; border: 1.5px solid black;">
-                      <h5 class="card-title" style="color: black;">{{ $researcher->name }}</h5>
-                    </a>
+                    <a href="{{ route('researcher.repository', $researcher->id) }}?page={{ request('page') }}" style="text-decoration: none;">
+    <img src="{{ $researcher->profile_picture ? Storage::url($researcher->profile_picture) : asset('img/default-profile.png') }}" 
+         alt="{{ $researcher->name }}" 
+         class="rounded-circle mb-3" 
+         style="width: 100px; height: 100px; object-fit: cover; border: 1.5px solid black;">
+    <h5 class="card-title" style="color: black;">{{ $researcher->name }}</h5>
+</a>
+
                     <p class="card-text">{{ $researcher->position }}</p>
                     <p class="card-text">{{ $researcher->email }}</p>
 
@@ -333,16 +379,46 @@
     </div>
 </div>
 
-	
+{{-- Update Credentials --}}
+<div class="modal fade" id="updateCredentialsModal" tabindex="-1" aria-labelledby="updateCredentialsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="updateCredentialsModalLabel" style ="color: #52489f;">Update Research Staff Credentials</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <form method="POST" action="{{ route('staff.updateCredentials') }}">
+            @csrf
+            <div class="mb-3">
+            <label for="email" class="form-label" style ="color: #52489f;">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ old('email', auth()->guard('research_staff')->user()->email) }}" required>
+            </div>
+            <div class="mb-3">
+            <label for="password" class="form-label" style ="color: #52489f;">New Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="mb-3">
+            <label for="password_confirmation" class="form-label" style ="color: #52489f;">Confirm Password</label>
+            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Credentials</button>
+        </form>
+    </div>
+    </div>
+  </div>
+</div>
 
 
 
 
 <!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.min.js" integrity="sha384-RuyvpeZCxMJCqVUGFI0Do1mQrods/hhxYlcVfGPOfQtPJh0JCw12tUAZ/Mv10S7D" crossorigin="anonymous"></script>
 
 <script>
   $('#generateReportModal').on('show.bs.modal', function (event) {

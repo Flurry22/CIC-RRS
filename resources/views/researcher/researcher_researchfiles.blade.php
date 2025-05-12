@@ -22,13 +22,16 @@
             <button class="close-btn" id="closeBtn">&times;</button>
             <img src="{{ asset('img/cic-logo.png') }}" alt="University Logo">
             <h3>USeP-College of Information and Computing</h3>
-            <h4>Research Repository System</h4>
-            <hr class="w-100 border-3">
             <ul>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: 8px">
                 <li><a href="{{ route('researcher.dashboard', ['id' => $researcher->id]) }}">Dashboard</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -7px">
                 <li><a href="{{ route('researchers.search') }}">Researchers & Researches</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -5px">
                 <li><a href="{{ route('researcher.settings.edit') }}">Settings</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -5px">
                 <li><a href="{{ route('researcher.files.index') }}">Research Files</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -5px">
                 <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
                 </ul>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

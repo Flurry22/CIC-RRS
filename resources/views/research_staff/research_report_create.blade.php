@@ -61,6 +61,14 @@
     <form action="{{ route('research-report.preview') }}" method="GET" >
       @csrf
       <div class="row mt-3 p-2">
+        
+    <div class="mb-3">
+        <label for="view_version" class="form-label">Report View</label>
+        <select name="view_version" id="view_version" class="form-select" required>
+            <option value="title" {{ request('view_version') === 'title' ? 'selected' : '' }}>By Research Title</option>
+            <option value="researcher" {{ request('view_version') === 'researcher' ? 'selected' : '' }}>By Researcher</option>
+        </select>
+    </div>
         <!-- Report Description -->
         <div class="col-md-6">
           <div class="form-group">
@@ -68,6 +76,7 @@
             <textarea name="description" id="description" class="form-control h-25" rows="1">{{ old('description') }}</textarea>
           </div>
         </div>
+        
           {{-- School Year --}}
         <div class="col-md-6">
           <div class="form-group">

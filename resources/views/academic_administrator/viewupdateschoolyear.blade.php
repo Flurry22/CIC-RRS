@@ -91,14 +91,42 @@
         <img src="{{ asset('img/cic-logo.png') }}" alt="usep-logo">
         <h3>USeP-College of Information and Computing</h3>
         <h4>Research Repository System</h4>
-        <hr class="w-100 border-3">
         <ul>
-            <li><a href="{{ route('academic_administrator.dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ route('academic_administrator.manage_research') }}">Manage Research</a></li>
-            <li><a href="{{ route('manage.researchers') }}">Manage Researchers</a></li>
-            <li><a href="{{ route('school_years.viewUpdateschoolyear') }}">School Years</a></li>
-            <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
-        </ul>
+          <hr style="width: 100%; border: 1px solid white; margin-bottom: -4px">
+              
+              <li><a href="{{ route('academic_administrator.dashboard') }}">Dashboard</a></li>
+              
+              <hr style="width: 100%; border: 1px solid white; margin: 2px 0;">
+              
+              {{-- Accordion --}}
+              <div class="accordion accordion-flush" id="accordionFlushExample">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  Monitoring
+                </button>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <li><a href="{{ route('academic_administrator.manage_research') }}">Research</a></li>
+                    <li><a href="{{ route('manage.researchers') }}">Researchers</a></li>
+                  </div>
+                </div>
+
+                <hr style="width: 100%; border: 1px solid white; margin: 2px 0;">
+
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  Admin Features
+                </button>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <li><a href="{{ route('school_years.viewUpdateschoolyear') }}">School Years</a></li>
+                  </div>
+                </div>
+              </div>
+              {{-- End of Accordion --}}
+              <hr style="width: 100%; border: 1px solid white; margin: 2px 0;">
+              
+              <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+              
+            </ul>
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
     </div>
 

@@ -6,10 +6,10 @@
     <title>Researcher Dashboard</title>
     <link rel="shortcut icon" href="{{ asset('img/cic-logo.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('stylesheet/researcher/dashboard.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
 <style>
@@ -54,12 +54,16 @@
             <img src="{{ asset('img/cic-logo.png') }}" alt="University Logo">
             <h3>USeP-College of Information and Computing</h3>
             <h4>Research Repository System</h4>
-            <hr class="w-100 border-3">
             <ul>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: 8px">
                 <li><a href="{{ route('researcher.dashboard', ['id' => $researcher->id]) }}">Dashboard</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -7px">
                 <li><a href="{{ route('researchers.search') }}">Researchers & Researches</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -5px">
                 <li><a href="{{ route('researcher.settings.edit') }}">Settings</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -5px">
                 <li><a href="{{ route('researcher.files.index') }}">Research Files</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -5px">
                 <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
                 </ul>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -300,7 +304,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script>
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("previewReportBtn").addEventListener("click", function () {

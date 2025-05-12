@@ -37,19 +37,47 @@
             <img src="{{ asset('img/cic-logo.png') }}" alt="usep-logo">
             <h3>USeP-College of Information and Computing</h3>
             <h4>Research Repository System</h4>
-            <hr class="w-100 border-3">
             <ul>
-                <li><a href="{{ route('academic_administrator.dashboard') }}">Dashboard</a></li>
-                <li><a href="{{ route('academic_administrator.manage_research') }}">Manage Research</a></li>
-                <li><a href="{{ route('manage.researchers') }}">Manage Researchers</a></li>
-                <li><a href="{{ route('school_years.viewUpdateschoolyear') }}">School Years</a></li>
-                <li><a href="#" data-bs-toggle="modal" data-bs-target="#updateCredentialsModal"> Update Credentials </a></li> 
-                <li class="nav-item">
-    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#createStaffModal">
-        Add New Staff
-    </a>
-</li>
-                <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+              <hr style="width: 100%; border: 1px solid white; margin-bottom: -4px">
+              
+              <li><a href="{{ route('academic_administrator.dashboard') }}">Dashboard</a></li>
+              
+              <hr style="width: 100%; border: 1px solid white; margin: 2px 0;">
+              
+              {{-- Accordion --}}
+              <div class="accordion accordion-flush" id="accordionFlushExample">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  Monitoring
+                </button>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <li><a href="{{ route('academic_administrator.manage_research') }}">Research</a></li>
+                    <li><a href="{{ route('manage.researchers') }}">Researchers</a></li>
+                  </div>
+                </div>
+
+                <hr style="width: 100%; border: 1px solid white; margin: 2px 0;">
+
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  Admin Features
+                </button>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <li><a href="{{ route('school_years.viewUpdateschoolyear') }}">School Years</a></li>
+                    <li><a href="#" data-bs-toggle="modal" data-bs-target="#updateCredentialsModal"> Update Credentials </a></li> 
+                    <li class="nav-item">
+                      <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#createStaffModal">
+                          Add New Staff
+                      </a>
+                    </li>
+                  </div>
+                </div>
+              </div>
+              {{-- End of Accordion --}}
+              <hr style="width: 100%; border: 1px solid white; margin: 2px 0;">
+              
+              <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+              
             </ul>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
@@ -130,17 +158,17 @@
 <div class="row g-2 mt-5 border-3 border-bottom pb-3 stats">
             <!-- Total Researchers Card -->
             <div class="col-md-3">
-                <div class="info-2 rounded-2 p-2 hover-border" style="background-color: #64C4FF;" data-bs-toggle="modal" data-bs-target="#totalResearchersModal">
+                <div class="info-2 rounded-2 p-2 hover-border" style="background-color: #cdcdcd;" data-bs-toggle="modal" data-bs-target="#totalResearchersModal">
                     <div class="info-body-1 p-2">
-                        <h4 style="font-size: 1.5rem; color: #3b444b;">{{$totalResearchers}}</h4>
-                        <p style="color: #3b444b;">Total Researchers</p>
+                        <h4 style="font-size: 1.5rem; color: black;">{{$totalResearchers}}</h4>
+                        <p style="color: black;">Total Researchers</p>
                     </div>
                 </div>
             </div>
 
             <!-- Ongoing Projects Card -->
             <div class="col-md-3">
-                <div class="info-2 rounded-2 p-2 hover-border" style="background-color: #FFB668;" data-bs-toggle="modal" data-bs-target="#ongoingProjectsModal">
+                <div class="info-2 rounded-2 p-2 hover-border" style="background-color: #FFFFAD;" data-bs-toggle="modal" data-bs-target="#ongoingProjectsModal">
                     <div class="info-body-2 p-2">
                         <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $ongoingCount }}</h4>
                         <p style="color: #3b444b;">Ongoing Projects</p>
@@ -150,7 +178,7 @@
 
             <!-- Overdue Projects Card -->
             <div class="col-md-3">
-                <div class="info-2 rounded-2 p-2 hover-border" style="background-color: #ff8282;" data-bs-toggle="modal" data-bs-target="#overdueResearchesModal">
+                <div class="info-2 rounded-2 p-2 hover-border" style="background-color: #87CEFA;" data-bs-toggle="modal" data-bs-target="#overdueResearchesModal">
                     <div class="info-body-3 p-2">
                         <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $overdueCount }}</h4>
                         <p style="color: #3b444b;">Overdue Projects</p>
@@ -160,7 +188,7 @@
 
             <!-- Finished Researches Card -->
             <div class="col-md-3">
-                <div class="info-2 rounded-2 p-2 hover-border" style="background-color: #90EE91;" data-bs-toggle="modal" data-bs-target="#finishedResearchesModal">
+                <div class="info-2 rounded-2 p-2 hover-border" style="background-color: #DCB2B9;" data-bs-toggle="modal" data-bs-target="#finishedResearchesModal">
                     <div class="info-body-3 p-2">
                         <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $finishedCount }}</h4>
                         <p style="color: #3b444b;">Finished Researches</p>
@@ -664,7 +692,21 @@ new Chart(ctx3, {
             sidebar.classList.remove('active');
         });
 
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+          const toggleBtn = document.querySelector('.custom-dropdown .toggle-button');
+          const dropdown = document.querySelector('.custom-dropdown');
+
+          toggleBtn.addEventListener('click', function () {
+            dropdown.classList.toggle('active');
+          });
+        });
+
 </script>
+
 
 
 

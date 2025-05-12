@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <title>Settings</title>
 
- 
+
 
 </head>
 <body>
@@ -25,13 +25,16 @@
             <button class="close-btn" id="closeBtn">&times;</button>
             <img src="{{ asset('img/cic-logo.png') }}" alt="University Logo">
             <h3>USeP-College of Information and Computing</h3>
-            <h4>Research Repository System</h4>
-            <hr class="w-100 border-3">
             <ul>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: 8px">
                 <li><a href="{{ route('researcher.dashboard', ['id' => $researcher->id]) }}">Dashboard</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -7px">
                 <li><a href="{{ route('researchers.search') }}">Researchers & Researches</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -5px">
                 <li><a href="{{ route('researcher.settings.edit') }}">Settings</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -5px">
                 <li><a href="{{ route('researcher.files.index') }}">Research Files</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -5px">
                 <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
                 </ul>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -61,8 +64,36 @@
 
 
                     {{-- container for change password and basic information form --}}
-                    <div class="row basic-info">
-                    <div class="col-md-6">
+                    <div class="basic-info">
+                      <!-- Change Password Form -->
+                      <form action="{{ route('researcher.changePassword') }}" method="POST" class="changePassForm">
+                        @csrf
+                          <div class="password-section">
+                            <h2 class="text-center" style="color: white;">Change Password</h2>
+                            <div class="info mt-4">
+                                <label for="current-password" class="form-label" style="color: white;" style="border:1px, solid #52489f">Current Password</label>
+                                <input type="password" id="current-password" name="current_password" class="form-control" required style="border:1px, solid #52489f">
+                            </div>
+                            <div class="info-2 mt-4">
+                                <label for="new-password" class="form-label" style="color: white;">New Password</label>
+                                <input type="password" id="new-password" name="new_password" class="form-control" required style="border:1px, solid #52489f">
+                            </div>
+                            <div class="info-3 mt-4">
+                                <label for="new-password-confirm" class="form-label" style="color: white;">Confirm New Password</label>
+                                <input type="password" id="new-password-confirm" name="new_password_confirmation" class="form-control" required style="border:1px, solid #52489f">
+                            </div>
+                            <div class="show-pass mt-4">
+                                <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()" >
+                                <label for="show-password" style="color: white;">Show Password</label>
+                            </div>
+                            <div class="save-button mt-4 d-flex justify-content-center">
+                                <button type="submit" class="btn" style="background-color :#922220; color: white;">Change Password</button>
+                            </div>
+                          </div>
+                      </form>
+
+
+                      <!-- Update Profile Information Form -->
                         <form action="{{ route('researcher.settings.update') }}" method="POST" enctype="multipart/form-data" class="updateProfileForm">
                           @csrf
                           @method('PUT')
@@ -99,40 +130,6 @@
                               </div>
                           </div>
                       </form>
-
-                      </div>
-                      
-                      <!-- Change Password Form -->
-                      <div class="col-md-6">
-                      <form action="{{ route('researcher.changePassword') }}" method="POST" class="changePassForm">
-                        @csrf
-                          <div class="password-section">
-                            <h2 class="text-center" style="color: white;">Change Password</h2>
-                            <div class="info mt-4">
-                                <label for="current-password" class="form-label" style="color: white;" style="border:1px, solid #52489f">Current Password</label>
-                                <input type="password" id="current-password" name="current_password" class="form-control" required style="border:1px, solid #52489f">
-                            </div>
-                            <div class="info-2 mt-4">
-                                <label for="new-password" class="form-label" style="color: white;">New Password</label>
-                                <input type="password" id="new-password" name="new_password" class="form-control" required style="border:1px, solid #52489f">
-                            </div>
-                            <div class="info-3 mt-4">
-                                <label for="new-password-confirm" class="form-label" style="color: white;">Confirm New Password</label>
-                                <input type="password" id="new-password-confirm" name="new_password_confirmation" class="form-control" required style="border:1px, solid #52489f">
-                            </div>
-                            <div class="show-pass mt-4">
-                                <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()" >
-                                <label for="show-password" style="color: white;">Show Password</label>
-                            </div>
-                            <div class="save-button mt-4 d-flex justify-content-center">
-                                <button type="submit" class="btn" style="background-color :#922220; color: white;">Change Password</button>
-                            </div>
-                          </div>
-                      </form>
-                      </div>
-
-                      <!-- Update Profile Information Form -->
-                     
                     </div>
                     <hr class="w-100 border-3">
                     <!-- Save Button -->

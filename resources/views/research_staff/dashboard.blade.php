@@ -15,7 +15,7 @@
 </head>
 
     <style>
-         .hover-border {
+        .hover-border {
         transition: box-shadow 0.3s ease-in-out, transform 0.2s ease-in-out;
         border: 2px solid transparent; /* Maintain size to prevent shifting */
     }
@@ -57,25 +57,67 @@
 
         <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
-            <button class="close-btn" id="closeBtn">&times;</button>
-            <img src="{{ asset('img/cic-logo.png') }}" alt="usep-logo">
-            <h3>USeP-College of Information and Computing</h3>
-            <h4>Research Repository System</h4>
-            <hr class="w-100 border-3">
-            <ul>
+          <button class="close-btn" id="closeBtn">&times;</button>
+          <img src="{{ asset('img/cic-logo.png') }}" alt="usep-logo">
+          <h3>USeP-College of Information and Computing</h3>
+          <h4>Research Repository System</h4>
+          <ul>
+            <hr style="width: 100%; border: 1px solid white; margin-top: -4px">
+
             <li><a href="{{ route('research_staff.dashboard') }}">Dashboard</a></li>
-                <li><a href="{{ route('research.create', ['type' => 'program']) }}">Add New Research</a></li>
-                <li><a href="{{ route('research.index') }}">View All Research</a></li>
-                <li><a href="{{ route('researchers.create') }}">Add New Researcher</a></li>
-                <li><a href="{{ route('researchers.index') }}">View Researchers</a></li>
-                <li><a href="/research-files">Research Files</a></li>
-                <li><a href="#" id="show-calendar-btn">Show Deadlines Calendar</a></li>
-                <li><a href="#" data-bs-toggle="modal" data-bs-target="#updateCredentialsModal">Update Credentials</a></li>
-                <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
-            </ul>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
+
+            <hr style="width: 100%; border: 1px solid white; margin-top: 5px">
+
+            {{-- Accordion --}}
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                Research Management
+              </button>
+              <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                  <li><a href="{{ route('research.create', ['type' => 'program']) }}">Add New Research</a></li>
+                  <li><a href="{{ route('research.index') }}">View All Research</a></li>
+                </div>
+              </div>
+
+              <hr style="width: 100%; border: 1px solid white; margin-top: 5px">
+
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                Researcher Management
+              </button>
+              <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                  <li><a href="{{ route('researchers.create') }}">Add New Researcher</a></li>
+                  <li><a href="{{ route('researchers.index') }}">View Researchers</a></li>
+                </div>
+              </div>
+
+              <hr style="width: 100%; border: 1px solid white; margin-top: 10px;">
+              
+              
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Monitoring Management
+              </button>
+              <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <li><a href="/research-files">Research Files</a></li>
+                  <li><a href="#" id="show-calendar-btn">Show Deadlines Calendar</a></li>
+                </div>
+              </div>
+            </div>
+            {{-- End of Accordion --}}
+
+            <hr style="width: 100%; border: 1px solid white; margin-top: 10px;">
+            <li><a href="#" data-bs-toggle="modal" data-bs-target="#updateCredentialsModal">Update Credentials</a></li>
+
+            <hr style="width: 100%; border: 1px solid white; margin-top: 5px;">
+            <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+            
+          </ul>
+
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+              @csrf
+          </form>
         </div>
 
             <!-- Main Content -->
@@ -177,7 +219,7 @@
 
                     <!-- Ongoing, Overdue, Finished Projects Cards -->
                     <div class="col-md-4">
-        <div class="info-2 rounded-2 p-2  hover-border" style="background-color: #FFB668;" data-bs-toggle="modal" data-bs-target="#ongoingProjectsModal">
+        <div class="info-2 rounded-2 p-2  hover-border" style="background-color: #FFFFAD;" data-bs-toggle="modal" data-bs-target="#ongoingProjectsModal">
             <div class="info-body-2 p-2">
                 <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $ongoingCount }}</h4>
                 <p style="color: #3b444b;">Ongoing Projects</p>
@@ -187,7 +229,7 @@
 
     <!-- Overdue Projects Card -->
     <div class="col-md-4">
-        <div class="info-2 rounded-2 p-2  hover-border" style="background-color: #ff8282;" data-bs-toggle="modal" data-bs-target="#overdueResearchesModal">
+        <div class="info-2 rounded-2 p-2  hover-border" style="background-color: #87CEFA;" data-bs-toggle="modal" data-bs-target="#overdueResearchesModal">
             <div class="info-body-3 p-2">
                 <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $overdueCount }}</h4>
                 <p style="color: #3b444b;">Overdue Projects</p>
@@ -197,7 +239,7 @@
 
     <!-- Finished Researches Card -->
     <div class="col-md-4">
-        <div class="info-2 rounded-2 p-2  hover-border" style="background-color: #90EE91;" data-bs-toggle="modal" data-bs-target="#finishedResearchesModal">
+        <div class="info-2 rounded-2 p-2  hover-border" style="background-color: #DCB2B9;" data-bs-toggle="modal" data-bs-target="#finishedResearchesModal">
             <div class="info-body-3 p-2">
                 <h4 style="font-size: 1.5rem; color: #3b444b;">{{ $finishedCount }}</h4>
                 <p style="color: #3b444b;">Finished Researches</p>

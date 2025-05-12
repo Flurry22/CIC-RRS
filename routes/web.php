@@ -147,7 +147,7 @@ Route::get('research/{id}/view-proposal-file', [ResearcherRepositoryController::
         // Show research report creation page
         Route::get('research-report/create', [ResearchReportController::class, 'create'])->name('research-report.create');
         Route::get('research-report/preview', [ResearchReportController::class, 'preview'])->name('research-report.preview');
-        Route::post('research-report/generate-pdf', [ResearchReportController::class, 'generatePdf'])->name('research-report.generate-pdf');
+        Route::post('/research-reports/export', [ResearchReportController::class, 'export'])->name('research-report.export');
 
     });
 

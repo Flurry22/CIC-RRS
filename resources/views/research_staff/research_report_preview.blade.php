@@ -37,12 +37,12 @@
             
         }
     </style>
-   
+
 </head>
 <body>
 
 <div class="container-fluid">
- 
+
   <!-- Buttons -->
   <div class="text-center mt-5" style="display: flex; justify-content: space-between; align-items:center;">
     <a href="{{ route('research-report.create') }}" style>Back to View All Research</a>

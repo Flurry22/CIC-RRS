@@ -19,9 +19,10 @@
         color: white;
     }
 
-       .custom-pagination .pagination {
-    gap: 0.5rem;
-}
+    .custom-pagination .pagination {
+    gap: 0.5rem; 
+		
+  }
 
 .custom-pagination .page-item .page-link {
     color: #922220;
@@ -52,7 +53,7 @@
     text-decoration: underline;
     color: #922220; /* Optional: change color on hover */
 }
-    </style>
+</style>
 </head>
 <body>
 
@@ -66,15 +67,18 @@
             <button class="close-btn" id="closeBtn">&times;</button>
             <img src="{{ asset('img/cic-logo.png') }}" alt="University Logo">
             <h3>USeP-College of Information and Computing</h3>
-            <h4>Research Repository System</h4>
-            <hr class="w-100 border-3">
             <ul>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: 8px">
                 <li><a href="{{ route('researcher.dashboard', ['id' => $researcher->id]) }}">Dashboard</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -7px">
                 <li><a href="{{ route('researchers.search') }}">Researchers & Researches</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -5px">
                 <li><a href="{{ route('researcher.settings.edit') }}">Settings</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -5px">
                 <li><a href="{{ route('researcher.files.index') }}">Research Files</a></li>
+                <hr style="width: 100%; border: 1px solid white; margin-bottom: -5px">
                 <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
-            </ul>
+                </ul>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
@@ -104,23 +108,23 @@
                         <!-- Search Button (only for search input) -->
                         <button type="submit" class="btn" style="background-color: #922220; color: white;">Search</button>
 
-                         <!-- Dropdown to select search type -->
-                         <div class="d-flex justify-content-center mb-1">
-                        <ul class="nav nav-tabs justify-content-center mb-1">
-    <li class="nav-item">
-        <a class="nav-link {{ $searchType === 'researchers' ? 'active' : '' }}" 
-           href="{{ route('researchers.search', ['search_type' => 'researchers', 'search' => request('search')]) }}">
-            Researchers
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link {{ $searchType === 'researches' ? 'active' : '' }}" 
-           href="{{ route('researchers.search', ['search_type' => 'researches', 'search' => request('search')]) }}">
-            Researches
-        </a>
-    </li>
-</ul>
-</div>
+                        <!-- Dropdown to select search type -->
+                        <div class="d-flex justify-content-center mb-1">
+													<ul class="nav nav-tabs justify-content-center mb-1">
+														<li class="nav-item">
+																<a class="nav-link {{ $searchType === 'researchers' ? 'active' : '' }}" 
+																	href="{{ route('researchers.search', ['search_type' => 'researchers', 'search' => request('search')]) }}">
+																		Researchers
+																</a>
+														</li>
+														<li class="nav-item">
+																<a class="nav-link {{ $searchType === 'researches' ? 'active' : '' }}" 
+																	href="{{ route('researchers.search', ['search_type' => 'researches', 'search' => request('search')]) }}">
+																		Researches
+																</a>
+														</li>
+													</ul>
+												</div>
                     </form>
 
                     <!-- Display form validation errors -->

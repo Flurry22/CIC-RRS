@@ -39,6 +39,7 @@
     transition: transform 0.3s ease-in-out;
     transform: translateX(0); /* Default visible state */
     z-index: 999;
+    
 }
 
 .sidebar img {
@@ -95,7 +96,6 @@
 .sidebar ul li a:hover {
     background-color: #B2BEB5;
     color: black;
-
 }
 
 
@@ -103,8 +103,6 @@
     transform: translateX(10px);
     
 }
-
-
 
 /* Close button for the sidebar */
 .close-btn {
@@ -141,7 +139,7 @@
 /* content */
 .main-content .box {
     background-color: #F2F9FF;
-    height: auto !important;
+    height: auto;
 }
 
 
@@ -164,6 +162,22 @@
 }
 
 
+
+/* basic-infor container */
+.basic-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.basic-info .changePassForm {
+  padding: 10px;
+  border-right: 0.5px solid lightgray;
+}
+
+.basic-info .updateProfileForm {
+  padding: 10px;
+  border-left: 0.5px solid lightgray;
+}
 
 
 
@@ -212,6 +226,25 @@
     .sidebar.active {
          transform: translateX(0);  /*Slide in when active */
     }
+
+    .basic-info {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  
+    .basic-info .changePassForm {
+      padding: 10px;
+      border-left: none !important;
+      border-right: none !important;
+      border-bottom: 0.5px solid lightgray;
+    }
+  
+    .basic-info .updateProfileForm {
+      padding: 10px;
+      border-left: none !important;
+      border-right: none !important;
+      border-top: 0.5px solid lightgray;
+    }
 }
 
 
@@ -256,6 +289,25 @@
     .sidebar.active {
          transform: translateX(0);  /*Slide in when active */
     }
+
+    .basic-info {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  
+    .basic-info .changePassForm {
+      padding: 10px;
+      border-left: none !important;
+      border-right: none !important;
+      border-bottom: 0.5px solid lightgray;
+    }
+  
+    .basic-info .updateProfileForm {
+      padding: 10px;
+      border-left: none !important;
+      border-right: none !important;
+      border-top: 0.5px solid lightgray;
+    }
 }
 
 
@@ -299,6 +351,25 @@
 
     .sidebar.active {
          transform: translateX(0);  /*Slide in when active */
+    }
+
+    .basic-info {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  
+    .basic-info .changePassForm {
+      padding: 10px;
+      border-left: none !important;
+      border-right: none !important;
+      border-bottom: 0.5px solid lightgray;
+    }
+  
+    .basic-info .updateProfileForm {
+      padding: 10px;
+      border-left: none !important;
+      border-right: none !important;
+      border-top: 0.5px solid lightgray;
     }
 }
 
@@ -349,4 +420,84 @@
     .sidebar.active {
         transform: translateX(0);  /*Slide in when active */
     }
+
+    .basic-info {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  
+    .basic-info .changePassForm {
+      padding: 10px;
+      border-left: none !important;
+      border-right: none !important;
+      border-bottom: 0.5px solid lightgray;
+    }
+  
+    .basic-info .updateProfileForm {
+      padding: 10px;
+      border-left: none !important;
+      border-right: none !important;
+      border-top: 0.5px solid lightgray;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px){
+    
+  .header {
+      height: auto;
+  }
+
+  .wrapper {
+      grid-template-columns: 1fr;  /*Single column layout */
+  }
+
+  .sidebar {
+      transform: translateX(-100%);  /*Initially hidden */
+      background-color: #2a2a2a;
+      color: #7393B3;
+      z-index: 999;
+  }
+
+  .close-btn {
+    align-self: flex-end;
+    background: none;
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .main-content {
+    grid-column: 1;
+  }
+
+  .menu-btn {
+      display: inline-block;  /*Visible on smaller screens */
+      margin-left: 2vw;
+  }
+
+  .sidebar.active {
+      transform: translateX(0);  /*Slide in when active */
+  }
+
+  .basic-info {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .basic-info .changePassForm {
+    padding: 10px;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 0.5px solid lightgray;
+  }
+
+  .basic-info .updateProfileForm {
+    padding: 10px;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: 0.5px solid lightgray;
+  }
 }
