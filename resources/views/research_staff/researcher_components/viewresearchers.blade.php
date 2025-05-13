@@ -233,18 +233,18 @@
                     <!-- Buttons for Edit and Delete (Bottom) -->
                     <div class="mt-3">
                         <!-- Edit Button -->
-                        <button type="button" class="btn btn-sm edit-researcher-btn"
-    style="background-color: #7393B3; color: white;"
-    onmouseover="this.style.backgroundColor='#5f7f9d';"
-    onmouseout="this.style.backgroundColor='#7393B3';"
-    data-bs-toggle="modal" data-bs-target="#editModal"
-    data-id="{{ $researcher->id }}"
-    data-name="{{ $researcher->name }}"
-    data-email="{{ $researcher->email }}"
-    data-position="{{ $researcher->position }}"
-    data-programs='@json($researcher->programs->pluck("id"))'>
-    Edit
-</button>
+                    <button type="button" class="btn btn-sm edit-researcher-btn"
+                        style="background-color: #7393B3; color: white;"
+                        onmouseover="this.style.backgroundColor='#5f7f9d';"
+                        onmouseout="this.style.backgroundColor='#7393B3';"
+                        data-bs-toggle="modal" data-bs-target="#editModal"
+                        data-id="{{ $researcher->id }}"
+                        data-name="{{ $researcher->name }}"
+                        data-email="{{ $researcher->email }}"
+                        data-position="{{ $researcher->position }}"
+                        data-programs='@json($researcher->programs->pluck("id"))'>
+                        Edit
+                    </button>
                         <!-- Delete Button -->
                         <form action="{{ route('researchers.destroy', $researcher->id) }}" method="POST" style="display: inline-block;">
                             @csrf
@@ -271,63 +271,66 @@
 
               
                      <!-- Edit Modal -->
-                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" >
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="editModalLabel">Edit Researcher</h5>
-                                    
-                                </div>
-                                <form id="editForm" method="POST" action="" enctype="multipart/form-data">
-                                    @csrf
-                               
-                                    <div class="modal-body">
-                                        <div>
-                                            <label for="editFirstName"style=" btn-secondary;">First Name</label>
-                                            <input type="text" name="first_name" id="editFirstName" class="form-control" required>
-                                        </div>
-                                        <div>
-                                            <label for="editLastName"style="btn-secondary">Last Name</label>
-                                            <input type="text" name="last_name" id="editLastName" class="form-control" required>
-                                        </div>
-                                        <div>
-                                            <label for="editPosition"style="btn-secondary;">Position</label>
-                                            <input type="text" name="position" id="editPosition" class="form-control" required>
-                                        </div>
-                                        <div>
-                                            <label for="editEmail"style="btn-secondary;">Email</label>
-                                            <input type="email" name="email" id="editEmail" class="form-control" required>
-                                        </div>
-                                        <div>
-                                            <label for="editPassword"style="cbtn-secondary;">Password</label>
-                                            <input type="password" name="password" id="editPassword" class="form-control">
-                                            <small class="form-text text-muted">Leave blank to keep the current password.</small>
-                                        </div>
-                                        <div>
-                                            <label for="editProfilePicture"style="color: white;">Profile Picture</label>
-                                            <input type="file" name="profile_picture" id="editProfilePicture" class="form-control">
-                                        </div>
+                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Researcher</h5>
+            </div>
+            <form id="editForm" method="POST" action="" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <!-- First Name -->
+                    <div>
+                        <label for="editFirstName" style="color: black;">First Name</label>
+                        <input type="text" name="first_name" id="editFirstName" class="form-control" required>
+                    </div>
+                    <!-- Last Name -->
+                    <div>
+                        <label for="editLastName" style="color: black;">Last Name</label>
+                        <input type="text" name="last_name" id="editLastName" class="form-control" required>
+                    </div>
+                    <!-- Position -->
+                    <div>
+                        <label for="editPosition" style="color: black;">Position</label>
+                        <input type="text" name="position" id="editPosition" class="form-control" required>
+                    </div>
+                    <!-- Email -->
+                    <div>
+                        <label for="editEmail" style="color: black;">Email</label>
+                        <input type="email" name="email" id="editEmail" class="form-control" required>
+                    </div>
+                    <!-- Password -->
+                    <div>
+                        <label for="editPassword" style="color: black;">Password</label>
+                        <input type="password" name="password" id="editPassword" class="form-control">
+                        <small class="form-text text-muted">Leave blank to keep the current password.</small>
+                    </div>
+                    <!-- Profile Picture -->
+                    <div>
+                        <label for="editProfilePicture" style="color: white;">Profile Picture</label>
+                        <input type="file" name="profile_picture" id="editProfilePicture" class="form-control">
+                    </div>
 
-                                        <!-- Checkbox section for selecting programs -->
-                                        <h5>Select Programs</h5>
-                                        @foreach($programs as $program)
-                                            <div class="form-check">
-                                                <input type="checkbox" name="program_ids[]" id="{{ 'program_' . $program->id }}" value="{{ $program->id }}" 
-                                                    class="form-check-input">
-                                                <label for="{{ 'program_' . $program->id }}" class="form-check-label" style="btn-secondary">{{ $program->name }}</label>
-                                            </div>
-                                        @endforeach
-                                    </div>
+                    <!-- Programs Checkbox -->
+                    <h5>Select Programs</h5>
+                    @foreach($programs as $program)
+                        <div class="form-check">
+                            <input type="checkbox" name="program_ids[]" id="{{ 'program_' . $program->id }}" value="{{ $program->id }}" 
+                                class="form-check-input">
+                            <label for="{{ 'program_' . $program->id }}" class="form-check-label" style="color: black;">{{ $program->name }}</label>
+                        </div>
+                    @endforeach
+                </div>
 
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn" style="background-color: #922220; color: white;">Update</button>
-                                    </div>
-                                </form>
-                            </div> <!-- End of modal-content -->
-                        </div> <!-- End of modal-dialog -->
-                    </div> 
-                    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn" style="background-color: #922220; color: white;">Update</button>
+                </div>
+            </form>
+        </div> <!-- End of modal-content -->
+    </div> <!-- End of modal-dialog -->
+</div> <!-- End of modal -->
                     
                     <!-- End of modal -->
             </div>
@@ -418,12 +421,12 @@
 
 
 <!-- Bootstrap JS and dependencies -->
-{{-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+ <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.min.js" integrity="sha384-RuyvpeZCxMJCqVUGFI0Do1mQrods/hhxYlcVfGPOfQtPJh0JCw12tUAZ/Mv10S7D" crossorigin="anonymous"></script>
+
 
 <script>
   $('#generateReportModal').on('show.bs.modal', function (event) {
@@ -465,26 +468,41 @@
 </script>
 
 <script>
-    
-    $(document).on('click', '.edit-researcher-btn', function () {
-    const researcherId = $(this).data('id');
-    const researcherName = $(this).data('name');
-    const researcherEmail = $(this).data('email');
-    const researcherPosition = $(this).data('position');
-    const researcherPrograms = JSON.parse($(this).attr('data-programs'));
+    // When the modal is shown
+    $('#editModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        
+        // Extract data attributes from the button
+        var name = button.data('name');
+        var email = button.data('email');
+        var position = button.data('position');
+        var programs = button.data('programs');
 
-    $('#editForm').attr('action', `/researchers/${researcherId}`);
-    $('#editFirstName').val(researcherName.split(' ')[0]);
-    $('#editLastName').val(researcherName.split(' ').slice(1).join(' '));
-    $('#editEmail').val(researcherEmail);
-    $('#editPosition').val(researcherPosition);
+        // Split name into first and last names
+        var nameParts = name.split(' ');
+        var firstName = nameParts[0];
+        var lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
 
-    $('input[name="program_ids[]"]').prop('checked', false);
-    researcherPrograms.forEach(function (id) {
-        $(`#program_${id}`).prop('checked', true);
+        // Set values to modal input fields
+        $('#editFirstName').val(firstName);
+        $('#editLastName').val(lastName);
+        $('#editEmail').val(email);
+        $('#editPosition').val(position);
+
+        // Check the programs based on the researcher’s programs
+        programs.forEach(function(programId) {
+            $('#program_' + programId).prop('checked', true);
+        });
+
+        // Set the form action URL dynamically with the researcher ID
+        var actionUrl = "{{ route('researchers.update', ':id') }}".replace(':id', button.data('id'));
+        $('#editForm').attr('action', actionUrl);
     });
-});
+
+    // Close modal manually if necessary
+   
 </script>
+
 
 
 </body>
