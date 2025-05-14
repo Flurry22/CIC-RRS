@@ -46,7 +46,7 @@
   <!-- Buttons -->
   <div class="text-center mt-5" style="display: flex; justify-content: space-between; align-items:center;">
     <a href="{{ route('research-report.create') }}" style>Back to View All Research</a>
-    <form action="{{ route('research-report.generate-pdf') }}" method="POST">
+   <form action="{{ route('research-report.export') }}" method="POST">
       @csrf
       <input type="hidden" name="school_year" value="{{ $request->school_year }}">
       <input type="hidden" name="semester" value="{{ $request->semester }}">
@@ -54,7 +54,15 @@
       <input type="hidden" name="researcher_id" value="{{ $request->researcher_id }}">
       <input type="hidden" name="program_id" value="{{ $request->program_id }}">
       <input type="hidden" name="description" value="{{ $request->description }}">
-      <button type="submit" class="btn btn-primary">Generate PDF</button>
+      <input type="hidden" name="view_version" value="{{ $viewVersion }}">
+
+      <div class="d-flex align-items-center gap-2">
+        <select name="format" class="form-select" style="width: 200px;">
+          <option value="pdf">PDF</option>
+          <option value="excel">Excel</option>
+        </select>
+        <button type="submit" class="btn btn-success">Download Report</button>
+      </div>
     </form>
   </div>
     <!-- Header -->
